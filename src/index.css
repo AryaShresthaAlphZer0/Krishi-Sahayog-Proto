@@ -1,25 +1,35 @@
 /* =========================================
    KRISHI SAHAYOG
-   GLOBAL CSS
+   GLOBAL STYLES
 ========================================= */
 
 :root {
-  --primary: #2E7D32;
-  --primary-light: #66BB6A;
+  /* ===============================
+     COLOR PALETTE
+  =============================== */
 
-  --accent: #D68C45;
+  --primary: #2e7d32;
+  --primary-light: #66bb6a;
 
-  --background: #FAF7F0;
+  --accent: #d68c45;
 
-  --text-dark: #2B2B2B;
-  --text-muted: #6B6B6B;
+  --background: #faf7f0;
 
-  --warning: #F2A93B;
-  --danger: #C0392B;
+  --text-dark: #2b2b2b;
+  --text-muted: #6b6b6b;
 
-  --border: #DCE8D8;
+  --warning: #f2a93b;
+  --danger: #c0392b;
 
-  --white: #FFFFFF;
+  --border: #dce8d8;
+
+  --white: #ffffff;
+
+  /* ===============================
+     LAYOUT
+  =============================== */
+
+  --sidebar-w: 250px;
 }
 
 
@@ -33,6 +43,20 @@
   box-sizing: border-box;
 }
 
+
+/* =========================================
+   HTML
+========================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
 html,
 body,
 #root {
@@ -40,22 +64,73 @@ body,
   min-height: 100%;
 }
 
+
 body {
+  margin: 0;
+
+  background-color: var(--background);
+
+  color: var(--text-dark);
+
   font-family:
     Inter,
+    "Segoe UI",
+    system-ui,
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    "Helvetica Neue",
+    Arial,
     sans-serif;
 
-  background:
-    var(--background);
-
-  color:
-    var(--text-dark);
+  -webkit-font-smoothing: antialiased;
 }
 
+
+/* =========================================
+   FORM ELEMENTS
+========================================= */
+
 button,
-input {
+input,
+textarea,
+select {
   font-family: inherit;
+}
+
+
+/* =========================================
+   LINKS
+========================================= */
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================
+   APP CONTENT
+========================================= */
+
+.app-content {
+  margin-left: var(--sidebar-w);
+
+  min-height: 100vh;
+
+  transition:
+    margin-left 0.25s ease;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+  .app-content {
+    margin-left: 0;
+
+    padding-top: 3.5rem;
+  }
+
 }
