@@ -1,36 +1,143 @@
+/* =========================================
+   CARD
+========================================= */
+
 .card {
   background-color: var(--white);
   border: 1px solid var(--border);
   border-radius: 16px;
+
   padding: 1.75rem;
-  box-shadow: 0 2px 10px rgba(43, 43, 43, 0.04);
+
+  min-width: 0;
+
+  /*
+    IMPORTANT:
+    Don't use overflow: hidden here.
+    It would cut off the purple glow.
+  */
+
+  box-shadow:
+    0 2px 10px rgba(43, 43, 43, 0.04);
+
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
+
+
+/* =========================================
+   HOVER — LIGHT PURPLE NEON
+========================================= */
 
 .card:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary-light);
-  box-shadow: 0 12px 28px rgba(46, 125, 50, 0.12);
+  transform: translateY(-5px);
+
+  border-color: #c084fc;
+
+  box-shadow:
+    0 0 6px rgba(192, 132, 252, 0.5),
+    0 0 18px rgba(192, 132, 252, 0.4),
+    0 0 35px rgba(168, 85, 247, 0.25);
 }
+
+
+/* =========================================
+   ICON / FLOWER
+========================================= */
 
 .icon {
-  font-size: 2rem;
   display: block;
-  margin-bottom: 0.75rem;
+
+  font-size: 2rem;
+
+  line-height: 1;
+
+  margin-bottom: 1rem;
+
+  /*
+    Make sure the icon is never clipped.
+  */
+  width: fit-content;
+
+  position: relative;
+  z-index: 1;
 }
 
+
+/* =========================================
+   TITLE
+========================================= */
+
 .title {
-  margin: 0 0 0.5rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.7rem;
+
   color: var(--text-dark);
+
+  font-size: 2rem;
+
+  line-height: 1.05;
+
+  /*
+    IMPORTANT FIX FOR
+    "Crop Recommendation"
+  */
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
+
+
+/* =========================================
+   DESCRIPTION
+========================================= */
 
 .body {
   margin: 0;
+
   color: var(--text-muted);
+
   font-size: 0.95rem;
+
   line-height: 1.6;
+
+  width: 100%;
+  max-width: 100%;
+
+  overflow-wrap: break-word;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+  .title {
+    font-size: 1.8rem;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .card {
+    padding: 1.5rem;
+  }
+
+  .icon {
+    font-size: 1.8rem;
+  }
+
+  .title {
+    font-size: 1.7rem;
+  }
+
+  .body {
+    font-size: 0.95rem;
+  }
 }

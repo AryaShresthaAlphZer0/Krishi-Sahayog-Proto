@@ -4,14 +4,46 @@ import styles from "./Navbar.module.css";
 
 const LINKS = [
   { label: "Home", icon: "🏠", to: "/" },
-  { label: "Features", icon: "✨", to: "/#features" },
-  { label: "About", icon: "🌾", to: "/#about" },
-  { label: "Login", icon: "🔑", to: "/login" },
+
+  {
+    label: "Features",
+    icon: "✨",
+    children: [
+      {
+        label: "Crop Recommendation",
+        icon: "🌾",
+        to: "/crop-recommendation",
+      },
+      {
+        label: "Disease Detection",
+        icon: "🍃",
+        to: "/disease-detection",
+      },
+      {
+        label: "Farm Dashboard",
+        icon: "📊",
+        to: "/dashboard",
+      },
+    ],
+  },
+
+  {
+    label: "About",
+    icon: "🌿",
+    to: "/#about",
+  },
+
+  {
+    label: "Login",
+    icon: "🔑",
+    to: "/login",
+  },
 ];
 
 export default function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [featuresOpen, setFeaturesOpen] = useState(false);
 
   const location = useLocation();
 
@@ -34,35 +66,15 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  const isActive = (item) => {
-    if (item.label === "Home") {
-      return location.pathname === "/" && !location.hash;
-    }
-
-    if (item.label === "Features") {
-      return (
-        location.pathname === "/" &&
-        location.hash === "#features"
-      );
-    }
-
-    if (item.label === "About") {
-      return (
-        location.pathname === "/" &&
-        location.hash === "#about"
-      );
-    }
-
-    if (item.label === "Login") {
-      return location.pathname === "/login";
-    }
-
-    return false;
-  };
+  const isFeatureActive =
+    location.pathname === "/crop-recommendation" ||
+    location.pathname === "/disease-detection" ||
+    location.pathname === "/dashboard";
 
   return (
     <>
-      {/* Mobile hamburger */}
+      {/* ================= MOBILE HAMBURGER ================= */}
+
       <button
         type="button"
         className={styles.hamburger}
@@ -74,7 +86,9 @@ export default function Navbar() {
         {mobileOpen ? "✕" : "☰"}
       </button>
 
-      {/* Mobile backdrop */}
+
+      {/* ================= MOBILE BACKDROP ================= */}
+
       <div
         className={
           mobileOpen
@@ -84,7 +98,9 @@ export default function Navbar() {
         onClick={() => setMobileOpen(false)}
       />
 
-      {/* Sidebar */}
+
+      {/* ================= SIDEBAR ================= */}
+
       <nav
         className={[
           styles.sidebar,
@@ -95,8 +111,10 @@ export default function Navbar() {
           .join(" ")}
       >
 
-        {/* Brand */}
+        {/* ================= BRAND ================= */}
+
         <div className={styles.brandRow}>
+
           <Link
             to="/"
             className={styles.brand}
@@ -110,7 +128,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Collapse button */}
+
           <button
             type="button"
             className={styles.collapseBtn}
@@ -125,45 +143,231 @@ export default function Navbar() {
           >
             {collapsed ? "»" : "«"}
           </button>
+
         </div>
 
-        {/* Navigation links */}
-        <ul className={styles.links}>
-          {LINKS.map((item) => (
-            <li key={item.label}>
-              <Link
-                to={item.to}
-                className={[
-                  styles.link,
-                  isActive(item)
-                    ? styles.active
-                    : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                title={item.label}
-                onClick={() =>
-                  setMobileOpen(false)
-                }
-              >
-                <span className={styles.linkIcon}>
-                  {item.icon}
-                </span>
 
-                <span className={styles.linkLabel}>
-                  {item.label}
+        {/* ================= NAVIGATION ================= */}
+
+        <ul className={styles.links}>
+
+          {/* HOME */}
+
+          <li>
+            <Link
+              to="/"
+              className={[
+                styles.link,
+                location.pathname === "/" &&
+                !location.hash
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="Home"
+              onClick={() =>
+                setMobileOpen(false)
+              }
+            >
+              <span className={styles.linkIcon}>
+                🏠
+              </span>
+
+              <span className={styles.linkLabel}>
+                Home
+              </span>
+            </Link>
+          </li>
+
+
+          {/* ================= FEATURES ================= */}
+
+          <li
+            className={styles.featureMenu}
+            onMouseEnter={() =>
+              !collapsed &&
+              setFeaturesOpen(true)
+            }
+            onMouseLeave={() =>
+              !collapsed &&
+              setFeaturesOpen(false)
+            }
+          >
+
+            <button
+              type="button"
+              className={[
+                styles.link,
+                styles.featureButton,
+                isFeatureActive
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="Features"
+              onClick={() =>
+                setFeaturesOpen(
+                  (value) => !value
+                )
+              }
+            >
+
+              <span className={styles.linkIcon}>
+                ✨
+              </span>
+
+              <span className={styles.linkLabel}>
+                Features
+              </span>
+
+              {!collapsed && (
+                <span
+                  className={[
+                    styles.featureArrow,
+                    featuresOpen
+                      ? styles.arrowOpen
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  ›
                 </span>
-              </Link>
-            </li>
-          ))}
+              )}
+
+            </button>
+
+
+            {/* FEATURE DROPDOWN */}
+
+            {!collapsed && featuresOpen && (
+
+              <div className={styles.featureDropdown}>
+
+                <Link
+                  to="/crop-recommendation"
+                  className={styles.featureItem}
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
+                >
+                  <span>🌾</span>
+
+                  <span>
+                    Crop Recommendation
+                  </span>
+                </Link>
+
+
+                <Link
+                  to="/disease-detection"
+                  className={styles.featureItem}
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
+                >
+                  <span>🍃</span>
+
+                  <span>
+                    Disease Detection
+                  </span>
+                </Link>
+
+
+                <Link
+                  to="/dashboard"
+                  className={styles.featureItem}
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
+                >
+                  <span>📊</span>
+
+                  <span>
+                    Farm Dashboard
+                  </span>
+                </Link>
+
+              </div>
+
+            )}
+
+          </li>
+
+
+          {/* ================= ABOUT ================= */}
+
+          <li>
+            <Link
+              to="/#about"
+              className={[
+                styles.link,
+                location.pathname === "/" &&
+                location.hash === "#about"
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="About"
+              onClick={() =>
+                setMobileOpen(false)
+              }
+            >
+              <span className={styles.linkIcon}>
+                🌿
+              </span>
+
+              <span className={styles.linkLabel}>
+                About
+              </span>
+            </Link>
+          </li>
+
+
+          {/* ================= LOGIN ================= */}
+
+          <li>
+            <Link
+              to="/login"
+              className={[
+                styles.link,
+                location.pathname === "/login"
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="Login"
+              onClick={() =>
+                setMobileOpen(false)
+              }
+            >
+              <span className={styles.linkIcon}>
+                🔑
+              </span>
+
+              <span className={styles.linkLabel}>
+                Login
+              </span>
+            </Link>
+          </li>
+
         </ul>
 
-        {/* Spacer */}
+
+        {/* ================= SPACER ================= */}
+
         <div className={styles.spacer} />
+
 
         <div className={styles.divider} />
 
-        {/* CTA */}
+
+        {/* ================= CTA ================= */}
+
         <Link
           to="/signup"
           className={styles.cta}
@@ -179,9 +383,11 @@ export default function Navbar() {
           </span>
         </Link>
 
+
         <p className={styles.footNote}>
           Built for Nepali farmers
         </p>
+
       </nav>
     </>
   );

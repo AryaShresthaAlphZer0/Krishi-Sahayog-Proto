@@ -208,3 +208,130 @@
     z-index: 35;
   }
 }
+/* =========================================
+   FEATURES DROPDOWN
+========================================= */
+
+.featureMenu {
+  position: relative;
+}
+
+
+/* Features button */
+
+.featureButton {
+  width: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  text-align: left;
+}
+
+
+.featureArrow {
+  margin-left: auto;
+
+  font-size: 1.3rem;
+
+  line-height: 1;
+
+  transition: transform 0.2s ease;
+}
+
+
+.arrowOpen {
+  transform: rotate(90deg);
+}
+
+
+/* =========================================
+   FEATURE DROPDOWN
+========================================= */
+
+.featureDropdown {
+  margin-top: 4px;
+
+  margin-left: 18px;
+
+  padding-left: 10px;
+
+  border-left: 2px solid var(--border);
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  animation: featureDropdownIn 0.18s ease;
+}
+
+
+.featureItem {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 9px 10px;
+
+  border-radius: 8px;
+
+  color: var(--text-muted);
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 500;
+
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.featureItem span:first-child {
+  font-size: 15px;
+
+  flex-shrink: 0;
+}
+
+
+.featureItem:hover {
+  background-color:
+    rgba(102, 187, 106, 0.14);
+
+  color: var(--primary);
+
+  transform: translateX(3px);
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes featureDropdownIn {
+
+  from {
+    opacity: 0;
+
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+
+}
