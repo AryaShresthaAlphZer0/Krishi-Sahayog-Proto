@@ -1,0 +1,136 @@
+/* =========================================
+   KRISHI SAHAYOG
+   GLOBAL STYLES
+========================================= */
+
+:root {
+  /* ===============================
+     COLOR PALETTE
+  =============================== */
+
+  --primary: #2e7d32;
+  --primary-light: #66bb6a;
+
+  --accent: #d68c45;
+
+  --background: #faf7f0;
+
+  --text-dark: #2b2b2b;
+  --text-muted: #6b6b6b;
+
+  --warning: #f2a93b;
+  --danger: #c0392b;
+
+  --border: #dce8d8;
+
+  --white: #ffffff;
+
+  /* ===============================
+     LAYOUT
+  =============================== */
+
+  --sidebar-w: 250px;
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   HTML
+========================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* =========================================
+   BODY
+========================================= */
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+
+body {
+  margin: 0;
+
+  background-color: var(--background);
+
+  color: var(--text-dark);
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* =========================================
+   FORM ELEMENTS
+========================================= */
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+
+/* =========================================
+   LINKS
+========================================= */
+
+a {
+  color: inherit;
+}
+
+
+/* =========================================
+   APP CONTENT
+========================================= */
+
+.app-content {
+  margin-left: var(--sidebar-w);
+
+  min-height: 100vh;
+
+  transition:
+    margin-left 0.25s ease;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+  .app-content {
+    margin-left: 0;
+
+    padding-top: 3.5rem;
+  }
+
+}
