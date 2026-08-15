@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./SignupPage.css";
 
-function Signup() {
+function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState(false);
 
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] =
     useState("");
@@ -23,28 +26,34 @@ function Signup() {
 
     console.log("Signup submitted");
 
-    // Later you can send the data to your backend here.
+    console.log("Name:", name);
+    console.log("Email:", email);
+    console.log("Password:", password);
 
-    // After successful signup:
-    navigate("/");
+    // Backend signup will be added later.
+
+    alert("Account created successfully!");
+
+    // Go to login after successful signup
+    navigate("/login");
   };
 
 
   return (
-    <div className="login-page">
+    <div className="signup-page">
 
-      {/* ================= LEFT HERO SECTION ================= */}
+      {/* ================= LEFT HERO ================= */}
 
-      <section className="hero-section">
+      <section className="signup-hero-section">
 
-        <div className="hero-overlay"></div>
+        <div className="signup-hero-overlay"></div>
 
-        <div className="hero-content">
+        <div className="signup-hero-content">
 
           {/* Logo */}
-          <Link to="/" className="logo logo-link">
+          <Link to="/" className="signup-logo">
 
-            <span className="logo-icon">
+            <span className="signup-logo-icon">
               🌱
             </span>
 
@@ -56,9 +65,9 @@ function Signup() {
 
 
           {/* Hero Text */}
-          <div className="hero-text">
+          <div className="signup-hero-text">
 
-            <p className="small-heading">
+            <p className="signup-small-heading">
               SMART AGRICULTURE • BETTER FUTURE
             </p>
 
@@ -76,10 +85,10 @@ function Signup() {
           </div>
 
 
-          {/* Hero Features */}
-          <div className="hero-bottom">
+          {/* Features */}
+          <div className="signup-hero-bottom">
 
-            <div className="stat">
+            <div className="signup-stat">
 
               <strong>
                 🌾
@@ -98,7 +107,7 @@ function Signup() {
             </div>
 
 
-            <div className="stat">
+            <div className="signup-stat">
 
               <strong>
                 🤝
@@ -123,14 +132,14 @@ function Signup() {
       </section>
 
 
-      {/* ================= SIGNUP SECTION ================= */}
+      {/* ================= SIGNUP FORM ================= */}
 
-      <section className="login-section">
+      <section className="signup-form-section">
 
-        <div className="login-card signup-card">
+        <div className="signup-card">
 
           {/* Mobile Logo */}
-          <div className="mobile-logo">
+          <div className="signup-mobile-logo">
 
             <span>
               🌱
@@ -144,9 +153,9 @@ function Signup() {
 
 
           {/* Header */}
-          <div className="login-header">
+          <div className="signup-header">
 
-            <span className="welcome-badge">
+            <span className="signup-welcome-badge">
               Join Krishi Sahayog 🌱
             </span>
 
@@ -165,15 +174,15 @@ function Signup() {
           <form onSubmit={handleSubmit}>
 
             {/* Full Name */}
-            <div className="form-group">
+            <div className="signup-form-group">
 
               <label htmlFor="name">
                 Full name
               </label>
 
-              <div className="input-wrapper">
+              <div className="signup-input-wrapper">
 
-                <span className="input-icon">
+                <span className="signup-input-icon">
                   👤
                 </span>
 
@@ -181,6 +190,10 @@ function Signup() {
                   id="name"
                   type="text"
                   placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) =>
+                    setName(e.target.value)
+                  }
                   required
                 />
 
@@ -190,15 +203,15 @@ function Signup() {
 
 
             {/* Email */}
-            <div className="form-group">
+            <div className="signup-form-group">
 
               <label htmlFor="signup-email">
                 Email address
               </label>
 
-              <div className="input-wrapper">
+              <div className="signup-input-wrapper">
 
-                <span className="input-icon">
+                <span className="signup-input-icon">
                   ✉
                 </span>
 
@@ -206,6 +219,10 @@ function Signup() {
                   id="signup-email"
                   type="email"
                   placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
                   required
                 />
 
@@ -215,15 +232,15 @@ function Signup() {
 
 
             {/* Password */}
-            <div className="form-group">
+            <div className="signup-form-group">
 
               <label htmlFor="signup-password">
                 Password
               </label>
 
-              <div className="input-wrapper">
+              <div className="signup-input-wrapper">
 
-                <span className="input-icon">
+                <span className="signup-input-icon">
                   🔒
                 </span>
 
@@ -245,7 +262,7 @@ function Signup() {
 
                 <button
                   type="button"
-                  className="password-toggle"
+                  className="signup-password-toggle"
                   onClick={() =>
                     setShowPassword(!showPassword)
                   }
@@ -260,15 +277,15 @@ function Signup() {
 
 
             {/* Confirm Password */}
-            <div className="form-group">
+            <div className="signup-form-group">
 
               <label htmlFor="confirm-password">
                 Confirm password
               </label>
 
-              <div className="input-wrapper">
+              <div className="signup-input-wrapper">
 
-                <span className="input-icon">
+                <span className="signup-input-icon">
                   🔐
                 </span>
 
@@ -283,22 +300,20 @@ function Signup() {
                   minLength="8"
                   value={confirmPassword}
                   onChange={(e) =>
-                    setConfirmPassword(
-                      e.target.value
-                    )
+                    setConfirmPassword(e.target.value)
                   }
                   required
                 />
 
                 <button
                   type="button"
-                  className="password-toggle"
+                  className="signup-password-toggle"
                   onClick={() =>
                     setShowConfirmPassword(
                       !showConfirmPassword
                     )
                   }
-                  aria-label="Toggle password visibility"
+                  aria-label="Toggle confirm password visibility"
                 >
                   {showConfirmPassword
                     ? "🙈"
@@ -311,9 +326,9 @@ function Signup() {
 
 
             {/* Terms */}
-            <div className="remember-row">
+            <div className="signup-remember-row">
 
-              <label className="remember">
+              <label className="signup-remember">
 
                 <input
                   type="checkbox"
@@ -332,14 +347,14 @@ function Signup() {
             {/* Signup Button */}
             <button
               type="submit"
-              className="login-button"
+              className="signup-button"
             >
 
               <span>
                 Create Account
               </span>
 
-              <span className="button-arrow">
+              <span className="signup-button-arrow">
                 →
               </span>
 
@@ -349,17 +364,17 @@ function Signup() {
 
 
           {/* Divider */}
-          <div className="divider">
+          <div className="signup-divider">
             <span>OR</span>
           </div>
 
 
-          {/* Login Link */}
-          <p className="register-text">
+          {/* Login */}
+          <p className="signup-register-text">
 
             Already have an account?
 
-            <Link to="/">
+            <Link to="/login">
               Login
             </Link>
 
@@ -367,7 +382,7 @@ function Signup() {
 
 
           {/* Footer */}
-          <p className="login-footer">
+          <p className="signup-footer">
             🌱 Growing together for a better tomorrow
           </p>
 
@@ -379,4 +394,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default SignupPage;

@@ -1,42 +1,58 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./LoginPage.css";
 
-function Login() {
+function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Login logic will be added here later
+    // Backend login will be added here later
     console.log("Login submitted");
+    console.log("Email:", email);
+    console.log("Password:", password);
 
-    // Example:
+    // For now, go to landing page after login
+    // Later change this to:
     // navigate("/dashboard");
+
+    alert("Login successful!");
   };
 
   return (
     <div className="login-page">
 
-      {/* ================= LEFT HERO SECTION ================= */}
+      {/* ================= LEFT HERO ================= */}
 
-      <section className="hero-section">
-        <div className="hero-overlay"></div>
+      <section className="login-hero-section">
 
-        <div className="hero-content">
+        <div className="login-hero-overlay"></div>
+
+        <div className="login-hero-content">
 
           {/* Logo */}
-          <Link to="/" className="logo logo-link">
-            <span className="logo-icon">🌱</span>
-            <span>Krishi Sahayog</span>
+          <Link to="/" className="login-logo">
+
+            <span className="login-logo-icon">
+              🌱
+            </span>
+
+            <span>
+              Krishi Sahayog
+            </span>
+
           </Link>
 
 
           {/* Hero Text */}
-          <div className="hero-text">
+          <div className="login-hero-text">
 
-            <p className="small-heading">
+            <p className="login-small-heading">
               SMART AGRICULTURE • BETTER FUTURE
             </p>
 
@@ -46,17 +62,18 @@ function Login() {
             </h1>
 
             <p>
-              Your trusted digital companion for smarter farming,
-              agricultural knowledge, and better crop decisions.
+              Your trusted digital companion for smarter
+              farming, agricultural knowledge, and better
+              crop decisions.
             </p>
 
           </div>
 
 
-          {/* Hero Features */}
-          <div className="hero-bottom">
+          {/* Features */}
+          <div className="login-hero-bottom">
 
-            <div className="stat">
+            <div className="login-stat">
 
               <strong>🌾</strong>
 
@@ -68,7 +85,7 @@ function Login() {
             </div>
 
 
-            <div className="stat">
+            <div className="login-stat">
 
               <strong>🌿</strong>
 
@@ -82,26 +99,32 @@ function Login() {
           </div>
 
         </div>
+
       </section>
 
 
-      {/* ================= LOGIN SECTION ================= */}
+      {/* ================= LOGIN FORM ================= */}
 
-      <section className="login-section">
+      <section className="login-form-section">
 
         <div className="login-card">
 
           {/* Mobile Logo */}
-          <div className="mobile-logo">
+          <div className="login-mobile-logo">
+
             <span>🌱</span>
-            <strong>Krishi Sahayog</strong>
+
+            <strong>
+              Krishi Sahayog
+            </strong>
+
           </div>
 
 
           {/* Header */}
           <div className="login-header">
 
-            <span className="welcome-badge">
+            <span className="login-welcome-badge">
               Welcome back 🌿
             </span>
 
@@ -116,19 +139,19 @@ function Login() {
           </div>
 
 
-          {/* Login Form */}
+          {/* Form */}
           <form onSubmit={handleSubmit}>
 
             {/* Email */}
-            <div className="form-group">
+            <div className="login-form-group">
 
               <label htmlFor="email">
                 Email address
               </label>
 
-              <div className="input-wrapper">
+              <div className="login-input-wrapper">
 
-                <span className="input-icon">
+                <span className="login-input-icon">
                   ✉
                 </span>
 
@@ -136,6 +159,8 @@ function Login() {
                   id="email"
                   type="email"
                   placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
 
@@ -145,41 +170,49 @@ function Login() {
 
 
             {/* Password */}
-            <div className="form-group">
+            <div className="login-form-group">
 
-              <div className="label-row">
+              <div className="login-label-row">
 
                 <label htmlFor="password">
                   Password
                 </label>
 
-                <a
-                  href="#"
-                  className="forgot-password"
-                  onClick={(e) => e.preventDefault()}
+                <button
+                  type="button"
+                  className="login-forgot-button"
+                  onClick={() =>
+                    alert("Password recovery will be connected to the backend later.")
+                  }
                 >
                   Forgot password?
-                </a>
+                </button>
 
               </div>
 
 
-              <div className="input-wrapper">
+              <div className="login-input-wrapper">
 
-                <span className="input-icon">
+                <span className="login-input-icon">
                   🔒
                 </span>
 
                 <input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
                   placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
 
                 <button
                   type="button"
-                  className="password-toggle"
+                  className="login-password-toggle"
                   onClick={() =>
                     setShowPassword(!showPassword)
                   }
@@ -194,11 +227,13 @@ function Login() {
 
 
             {/* Remember Me */}
-            <div className="remember-row">
+            <div className="login-remember-row">
 
-              <label className="remember">
+              <label className="login-remember">
 
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                />
 
                 <span>
                   Remember me
@@ -214,21 +249,28 @@ function Login() {
               type="submit"
               className="login-button"
             >
-              <span>Login</span>
-              <span className="button-arrow">→</span>
+
+              <span>
+                Login
+              </span>
+
+              <span className="login-button-arrow">
+                →
+              </span>
+
             </button>
 
           </form>
 
 
           {/* Divider */}
-          <div className="divider">
+          <div className="login-divider">
             <span>OR</span>
           </div>
 
 
-          {/* Signup Link */}
-          <p className="register-text">
+          {/* Signup */}
+          <p className="login-register-text">
 
             Don't have an account?
 
@@ -252,4 +294,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginPage;
