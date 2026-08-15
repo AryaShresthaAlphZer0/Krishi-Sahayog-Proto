@@ -10,11 +10,9 @@
 
 .page {
   width: 100%;
-
   min-height: 100vh;
 
   background: var(--background);
-
   color: var(--text-dark);
 
   overflow-x: hidden;
@@ -54,7 +52,6 @@
       rgba(102, 187, 106, 0.12),
       transparent 32%
     ),
-
     var(--background);
 }
 
@@ -65,7 +62,6 @@
 
 .heroContent {
   position: relative;
-
   z-index: 2;
 
   max-width: 900px;
@@ -106,7 +102,6 @@
   content: "";
 
   width: 38px;
-
   height: 2px;
 
   flex-shrink: 0;
@@ -279,7 +274,6 @@
   position: absolute;
 
   width: 420px;
-
   height: 420px;
 
   border-radius: 50%;
@@ -306,14 +300,18 @@
 }
 
 
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
 .sectionHead {
-  max-width: 720px;
+  max-width: 1200px;
 
   margin:
     0 auto
-    4rem;
+    5rem;
 
-  text-align: center;
+  text-align: left;
 }
 
 
@@ -322,7 +320,11 @@
 ========================================================= */
 
 .sectionEyebrow {
-  display: block;
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 14px;
 
   margin-bottom: 1rem;
 
@@ -333,11 +335,66 @@
     Courier,
     monospace;
 
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 
-  font-weight: 700;
+  font-weight: 500;
 
   letter-spacing: 0.14em;
+}
+
+
+.sectionEyebrow::before {
+  content: "";
+
+  width: 38px;
+  height: 2px;
+
+  flex-shrink: 0;
+
+  background: var(--accent);
+}
+
+
+/* =========================================================
+   TOOLS TITLE
+========================================================= */
+
+.toolsTitle {
+  margin:
+    25px 0
+    25px;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(4rem, 7vw, 6.5rem);
+
+  font-weight: 500;
+
+  line-height: 0.88;
+
+  letter-spacing: -0.055em;
+}
+
+
+.toolsTitle span {
+  display: block;
+
+  color: #185c2b;
+}
+
+
+.toolsTitle em {
+  display: block;
+
+  color: #d68c45;
+
+  font-style: italic;
+
+  font-weight: 500;
 }
 
 
@@ -446,7 +503,6 @@
   list-style: none;
 
   padding: 0;
-
   margin: 0;
 
   display: flex;
@@ -494,7 +550,6 @@
 
 .stepNum {
   width: 36px;
-
   height: 36px;
 
   flex-shrink: 0;
@@ -502,7 +557,6 @@
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   border-radius: 50%;
@@ -563,13 +617,11 @@
   position: absolute;
 
   width: 500px;
-
   height: 500px;
 
   border-radius: 50%;
 
   top: -300px;
-
   right: -100px;
 
   background:
@@ -631,7 +683,7 @@
 
 
 /* =========================================================
-   MOBILE
+   TABLET
 ========================================================= */
 
 @media (max-width: 1000px) {
@@ -661,7 +713,6 @@
 
   .subtitle {
     margin-left: auto;
-
     margin-right: auto;
   }
 
@@ -675,7 +726,6 @@
     justify-content: center;
 
     margin-left: auto;
-
     margin-right: auto;
   }
 
@@ -695,6 +745,10 @@
 
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 767px) {
 
@@ -750,7 +804,6 @@
 
   .plantContainer::before {
     width: 300px;
-
     height: 300px;
   }
 
@@ -762,8 +815,34 @@
   }
 
 
+  /* Tools heading */
+
   .sectionHead {
+    text-align: left;
+
     margin-bottom: 3rem;
+  }
+
+
+  .sectionEyebrow {
+    font-size: 0.72rem;
+
+    letter-spacing: 0.1em;
+
+    gap: 10px;
+  }
+
+
+  .sectionEyebrow::before {
+    width: 28px;
+  }
+
+
+  .toolsTitle {
+    font-size:
+      clamp(3.5rem, 14vw, 5rem);
+
+    letter-spacing: -0.045em;
   }
 
 
@@ -790,6 +869,10 @@
 
 }
 
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
 
 @media (max-width: 480px) {
 
@@ -844,6 +927,11 @@
 
   .statLabel {
     font-size: 0.62rem;
+  }
+
+
+  .toolsTitle {
+    font-size: 3.5rem;
   }
 
 }

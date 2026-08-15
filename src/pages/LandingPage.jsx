@@ -150,12 +150,14 @@ export default function LandingPage() {
         <div className={styles.sectionHead}>
 
           <span className={styles.sectionEyebrow}>
-            WHAT WE OFFER
-          </span>
+  WHAT WE BRING TO THE FIELD
+        </span>
 
-          <h2 className={styles.sectionTitle}>
-            Everything a small farm needs
-          </h2>
+        <h2 className={styles.toolsTitle}>
+        <span>Three tools.</span>
+         <em>One calmer</em>
+        <span>season.</span>
+        </h2>
 
           <p className={styles.sectionText}>
             Three simple tools, built around the decisions
