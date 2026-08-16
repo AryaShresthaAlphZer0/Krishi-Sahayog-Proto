@@ -27,6 +27,12 @@ const FEATURES = [
 ];
 
 export default function LandingPage() {
+
+  // Check whether a user is logged in
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const isLoggedIn = !!user;
+
   return (
     <div className={styles.page}>
 
@@ -39,14 +45,12 @@ export default function LandingPage() {
         {/* LEFT SIDE */}
         <div className={styles.heroContent}>
 
-          {/* Small heading */}
           <span className={styles.badge}>
             Practical intelligence for Nepal's fields
           </span>
 
-
-          {/* Main heading */}
           <h1 className={styles.title}>
+
             <span className={styles.titleGreen}>
               Every season
             </span>
@@ -58,10 +62,9 @@ export default function LandingPage() {
             <span className={styles.titleGreen}>
               better question.
             </span>
+
           </h1>
 
-
-          {/* Description */}
           <p className={styles.subtitle}>
             Krishi Sahayog brings a little more certainty to the
             field — recommending what to grow, spotting what's
@@ -69,7 +72,8 @@ export default function LandingPage() {
           </p>
 
 
-          {/* Buttons */}
+          {/* ================= BUTTONS ================= */}
+
           <div className={styles.actions}>
 
             <Button
@@ -79,17 +83,34 @@ export default function LandingPage() {
               Get Started
             </Button>
 
-            <Button
-              to="/login"
-              variant="outline"
-            >
-              Login
-            </Button>
+
+            {/* LOGIN / WELCOME */}
+
+            {isLoggedIn ? (
+
+              <Button
+                to="/"
+                variant="primary"
+              >
+                Welcome
+              </Button>
+
+            ) : (
+
+              <Button
+                to="/login"
+                variant="outline"
+              >
+                Login
+              </Button>
+
+            )}
 
           </div>
 
 
-          {/* Statistics */}
+          {/* ================= STATISTICS ================= */}
+
           <div className={styles.stats}>
 
             <div className={styles.stat}>
@@ -129,7 +150,7 @@ export default function LandingPage() {
         </div>
 
 
-        {/* RIGHT SIDE - PLANT ANIMATION */}
+        {/* ================= RIGHT SIDE ================= */}
 
         <div className={styles.plantContainer}>
           <PlantAnimation />
@@ -150,14 +171,14 @@ export default function LandingPage() {
         <div className={styles.sectionHead}>
 
           <span className={styles.sectionEyebrow}>
-  WHAT WE BRING TO THE FIELD
-        </span>
+            WHAT WE BRING TO THE FIELD
+          </span>
 
-        <h2 className={styles.toolsTitle}>
-        <span>Three tools.</span>
-         <em>One calmer</em>
-        <span>season.</span>
-        </h2>
+          <h2 className={styles.toolsTitle}>
+            <span>Three tools.</span>
+            <em>One calmer</em>
+            <span>season.</span>
+          </h2>
 
           <p className={styles.sectionText}>
             Three simple tools, built around the decisions
@@ -170,12 +191,14 @@ export default function LandingPage() {
         <div className={styles.grid}>
 
           {FEATURES.map((feature) => (
+
             <Card
               key={feature.title}
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
             />
+
           ))}
 
         </div>
@@ -220,7 +243,7 @@ export default function LandingPage() {
           </div>
 
 
-          {/* Steps */}
+          {/* ================= STEPS ================= */}
 
           <ul className={styles.stepList}>
 
@@ -231,6 +254,7 @@ export default function LandingPage() {
               </span>
 
               <p className={styles.stepText}>
+
                 <strong>
                   Create an account
                 </strong>
@@ -238,6 +262,7 @@ export default function LandingPage() {
                 <span>
                   Add your farm's basic details.
                 </span>
+
               </p>
 
             </li>
@@ -250,6 +275,7 @@ export default function LandingPage() {
               </span>
 
               <p className={styles.stepText}>
+
                 <strong>
                   Enter your data
                 </strong>
@@ -258,6 +284,7 @@ export default function LandingPage() {
                   Enter soil information or upload
                   a leaf photo.
                 </span>
+
               </p>
 
             </li>
@@ -270,6 +297,7 @@ export default function LandingPage() {
               </span>
 
               <p className={styles.stepText}>
+
                 <strong>
                   Act on the result
                 </strong>
@@ -278,6 +306,7 @@ export default function LandingPage() {
                   Get a crop suggestion or treatment
                   guidance.
                 </span>
+
               </p>
 
             </li>

@@ -1,227 +1,432 @@
+/* =========================================
+   SIDEBAR
+========================================= */
+
 .sidebar {
   position: fixed;
+
   top: 0;
   left: 0;
-  height: 100vh;
+
   width: var(--sidebar-w, 250px);
+  height: 100vh;
+
   background-color: var(--white);
+
   border-right: 1px solid var(--border);
+
   display: flex;
   flex-direction: column;
+
   padding: 1.25rem 0.75rem;
+
+  box-sizing: border-box;
+
   z-index: 40;
-  transition: width 0.25s ease, transform 0.25s ease;
-  overflow: hidden;
+
+  transition:
+    width 0.25s ease,
+    transform 0.25s ease;
+
+  /*
+    Important:
+    Profile dropdown is allowed to
+    extend outside the sidebar.
+  */
+  overflow: visible;
 }
+
+
+/* =========================================
+   BRAND
+========================================= */
 
 .brandRow {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 0.5rem;
-  padding: 0.25rem 0.5rem 1.25rem;
+
+  padding:
+    0.25rem
+    0.5rem
+    1.25rem;
+
+  flex-shrink: 0;
 }
 
 .brand {
   display: flex;
+
   align-items: center;
+
   gap: 0.5rem;
+
   font-size: 1.05rem;
+
   font-weight: 700;
+
   color: var(--primary);
+
   text-decoration: none;
+
   white-space: nowrap;
+
+  min-width: 0;
 }
 
 .leafMark {
   font-size: 1.4rem;
+
+  flex-shrink: 0;
 }
 
 .brandText {
-  transition: opacity 0.15s ease;
+  white-space: nowrap;
 }
 
-.collapsed .brandText,
-.collapsed .linkLabel,
-.collapsed .ctaLabel,
-.collapsed .footNote {
+
+/* =========================================
+   COLLAPSED BRAND
+========================================= */
+
+.collapsed .brandRow {
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 0.75rem;
+}
+
+.collapsed .brand {
+  justify-content: center;
+}
+
+.collapsed .brandText {
   display: none;
 }
 
-.collapsed .brandRow {
-  justify-content: center;
-  flex-direction: column;
-}
+
+/* =========================================
+   COLLAPSE BUTTON
+========================================= */
 
 .collapseBtn {
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-muted);
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  line-height: 1;
-  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+
   flex-shrink: 0;
+
+  background: transparent;
+
+  border: 1px solid var(--border);
+
+  border-radius: 10px;
+
+  color: var(--text-muted);
+
+  cursor: pointer;
+
+  font-size: 1rem;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
 }
 
 .collapseBtn:hover {
   color: var(--primary);
-  border-color: var(--primary-light);
+
+  border-color:
+    var(--primary-light);
 }
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
 
 .links {
   display: flex;
+
   flex-direction: column;
+
   gap: 0.25rem;
+
   list-style: none;
+
   margin: 0;
+
   padding: 0;
+
+  flex-shrink: 0;
 }
 
 .link {
+  width: 100%;
+
+  box-sizing: border-box;
+
   display: flex;
+
   align-items: center;
+
   gap: 0.75rem;
-  padding: 0.7rem 0.85rem;
-  border-left: 3px solid transparent;
-  border-radius: 0 10px 10px 0;
+
+  padding:
+    0.7rem
+    0.85rem;
+
+  border-left:
+    3px solid transparent;
+
+  border-radius:
+    0 10px 10px 0;
+
   color: var(--text-dark);
+
   text-decoration: none;
+
   font-size: 0.95rem;
+
   font-weight: 500;
+
   white-space: nowrap;
-  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .link:hover {
-  background-color: rgba(102, 187, 106, 0.14);
-  border-left-color: var(--primary-light);
+  background-color:
+    rgba(102, 187, 106, 0.14);
+
+  border-left-color:
+    var(--primary-light);
+
   color: var(--primary);
 }
 
 .active {
-  background-color: rgba(46, 125, 50, 0.12);
-  border-left-color: var(--primary);
+  background-color:
+    rgba(46, 125, 50, 0.12);
+
+  border-left-color:
+    var(--primary);
+
   color: var(--primary);
+
   font-weight: 600;
 }
 
 .linkIcon {
   width: 1.25rem;
+
+  min-width: 1.25rem;
+
   text-align: center;
+
   flex-shrink: 0;
 }
 
+
+/* =========================================
+   COLLAPSED LINKS
+========================================= */
+
+.collapsed .link {
+  width: 48px;
+
+  height: 48px;
+
+  padding: 0;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  justify-content: center;
+
+  border-left: 3px solid transparent;
+
+  border-radius: 0 10px 10px 0;
+}
+
+.collapsed .linkLabel {
+  display: none;
+}
+
+.collapsed .featureArrow {
+  display: none;
+}
+
+
+/* =========================================
+   SPACER
+========================================= */
+
 .spacer {
   flex: 1;
+
+  min-height: 1rem;
 }
+
+
+/* =========================================
+   PROFILE SECTION
+========================================= */
+
+.profileSection {
+  position: relative;
+
+  width: 100%;
+
+  flex-shrink: 0;
+
+  overflow: visible;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+.divider {
+  width: calc(100% - 1rem);
+
+  height: 1px;
+
+  margin:
+    0.75rem
+    0.5rem;
+
+  background-color:
+    var(--border);
+
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   CTA
+========================================= */
 
 .cta {
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   gap: 0.5rem;
-  margin: 0 0.35rem 0.75rem;
-  padding: 0.8rem 1rem;
+
+  margin:
+    0
+    0.35rem
+    0.75rem;
+
+  padding:
+    0.8rem
+    1rem;
+
   border-radius: 10px;
-  background-color: var(--accent);
+
+  background-color:
+    var(--accent);
+
   color: var(--white);
+
   font-weight: 600;
+
   text-decoration: none;
+
   white-space: nowrap;
-  box-shadow: 0 6px 16px rgba(214, 140, 69, 0.28);
-  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  box-shadow:
+    0 6px 16px
+    rgba(214, 140, 69, 0.28);
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+
+  flex-shrink: 0;
 }
 
 .cta:hover {
   background-color: #c07a36;
-  transform: translateY(-2px);
+
+  transform:
+    translateY(-2px);
 }
 
-.divider {
-  height: 1px;
-  background-color: var(--border);
-  margin: 0.75rem 0.5rem;
+
+/* =========================================
+   COLLAPSED CTA
+========================================= */
+
+.collapsed .cta {
+  width: 48px;
+
+  height: 48px;
+
+  padding: 0;
+
+  margin:
+    0
+    auto
+    0.75rem;
+
+  border-radius: 12px;
 }
+
+.collapsed .ctaLabel {
+  display: none;
+}
+
+
+/* =========================================
+   FOOTNOTE
+========================================= */
 
 .footNote {
-  padding: 0 0.85rem;
+  padding:
+    0
+    0.85rem;
+
   font-size: 0.75rem;
+
   color: var(--text-muted);
+
   margin: 0;
+
+  white-space: nowrap;
+
+  text-align: center;
 }
 
-/* Mobile hamburger */
-.hamburger {
-  display: none;
-  position: fixed;
-  top: 0.9rem;
-  left: 0.9rem;
-  z-index: 60;
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background-color: var(--white);
-  color: var(--primary);
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.backdrop {
+.collapsed .footNote {
   display: none;
 }
 
-@media (max-width: 767px) {
-  .hamburger {
-    display: block;
-  }
 
-  .sidebar {
-    width: 250px;
-    transform: translateX(-100%);
-    box-shadow: 0 0 30px rgba(43, 43, 43, 0.15);
-  }
-
-  .open {
-    transform: translateX(0);
-  }
-
-  .collapsed .brandText,
-  .collapsed .linkLabel,
-  .collapsed .ctaLabel,
-  .collapsed .footNote {
-    display: inline;
-  }
-
-  .collapseBtn {
-    display: none;
-  }
-
-  .backdropVisible {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(43, 43, 43, 0.35);
-    z-index: 35;
-  }
-}
 /* =========================================
-   FEATURES DROPDOWN
+   FEATURES
 ========================================= */
 
 .featureMenu {
   position: relative;
 }
 
-
-/* Features button */
-
 .featureButton {
-  width: 100%;
-
   border: none;
 
   background: transparent;
@@ -233,7 +438,6 @@
   text-align: left;
 }
 
-
 .featureArrow {
   margin-left: auto;
 
@@ -241,12 +445,13 @@
 
   line-height: 1;
 
-  transition: transform 0.2s ease;
+  transition:
+    transform 0.2s ease;
 }
 
-
 .arrowOpen {
-  transform: rotate(90deg);
+  transform:
+    rotate(90deg);
 }
 
 
@@ -261,7 +466,8 @@
 
   padding-left: 10px;
 
-  border-left: 2px solid var(--border);
+  border-left:
+    2px solid var(--border);
 
   display: flex;
 
@@ -269,9 +475,10 @@
 
   gap: 3px;
 
-  animation: featureDropdownIn 0.18s ease;
+  animation:
+    featureDropdownIn
+    0.18s ease;
 }
-
 
 .featureItem {
   display: flex;
@@ -280,7 +487,9 @@
 
   gap: 9px;
 
-  padding: 9px 10px;
+  padding:
+    9px
+    10px;
 
   border-radius: 8px;
 
@@ -298,13 +507,11 @@
     transform 0.18s ease;
 }
 
-
 .featureItem span:first-child {
   font-size: 15px;
 
   flex-shrink: 0;
 }
-
 
 .featureItem:hover {
   background-color:
@@ -312,7 +519,8 @@
 
   color: var(--primary);
 
-  transform: translateX(3px);
+  transform:
+    translateX(3px);
 }
 
 
@@ -321,17 +529,169 @@
 ========================================= */
 
 @keyframes featureDropdownIn {
-
   from {
     opacity: 0;
 
-    transform: translateY(-5px);
+    transform:
+      translateY(-5px);
   }
 
   to {
     opacity: 1;
 
-    transform: translateY(0);
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================================
+   MOBILE HAMBURGER
+========================================= */
+
+.hamburger {
+  display: none;
+
+  position: fixed;
+
+  top: 0.9rem;
+  left: 0.9rem;
+
+  z-index: 60;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 10px;
+
+  border:
+    1px solid var(--border);
+
+  background-color:
+    var(--white);
+
+  color: var(--primary);
+
+  font-size: 1.2rem;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   BACKDROP
+========================================= */
+
+.backdrop {
+  display: none;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+  .hamburger {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
   }
 
+  .sidebar {
+    width: 250px;
+
+    transform:
+      translateX(-100%);
+
+    box-shadow:
+      0 0 30px
+      rgba(43, 43, 43, 0.15);
+
+    overflow: visible;
+  }
+
+  .open {
+    transform:
+      translateX(0);
+  }
+
+  /* Mobile always uses expanded layout */
+
+  .collapsed .brandRow {
+    flex-direction: row;
+
+    justify-content: space-between;
+  }
+
+  .collapsed .brandText {
+    display: inline;
+  }
+
+  .collapsed .link {
+    width: 100%;
+
+    height: auto;
+
+    padding:
+      0.7rem
+      0.85rem;
+
+    margin: 0;
+
+    justify-content: flex-start;
+  }
+
+  .collapsed .linkLabel {
+    display: inline;
+  }
+
+  .collapsed .featureArrow {
+    display: inline;
+
+    margin-left: auto;
+  }
+
+  .collapsed .cta {
+    width: auto;
+
+    height: auto;
+
+    padding:
+      0.8rem
+      1rem;
+
+    margin:
+      0
+      0.35rem
+      0.75rem;
+  }
+
+  .collapsed .ctaLabel {
+    display: inline;
+  }
+
+  .collapsed .footNote {
+    display: block;
+  }
+
+  .collapseBtn {
+    display: none;
+  }
+
+  .backdropVisible {
+    display: block;
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+      rgba(43, 43, 43, 0.35);
+
+    z-index: 35;
+  }
 }

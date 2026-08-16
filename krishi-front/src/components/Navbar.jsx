@@ -1,44 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.css";
-
-const LINKS = [
-  { label: "Home", icon: "🏠", to: "/" },
-
-  {
-    label: "Features",
-    icon: "✨",
-    children: [
-      {
-        label: "Crop Recommendation",
-        icon: "🌾",
-        to: "/crop-recommendation",
-      },
-      {
-        label: "Disease Detection",
-        icon: "🍃",
-        to: "/disease-detection",
-      },
-      {
-        label: "Farm Dashboard",
-        icon: "📊",
-        to: "/dashboard",
-      },
-    ],
-  },
-
-  {
-    label: "About",
-    icon: "🌿",
-    to: "/#about",
-  },
-
-  {
-    label: "Login",
-    icon: "🔑",
-    to: "/login",
-  },
-];
+import Profile from "./Profile";
 
 export default function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -46,6 +9,10 @@ export default function Navbar() {
   const [featuresOpen, setFeaturesOpen] = useState(false);
 
   const location = useLocation();
+
+  /* =========================================
+     SIDEBAR WIDTH
+  ========================================= */
 
   useEffect(() => {
     const isMobile = window.matchMedia(
@@ -62,9 +29,17 @@ export default function Navbar() {
     );
   }, [collapsed]);
 
+  /* =========================================
+     CLOSE MOBILE MENU WHEN ROUTE CHANGES
+  ========================================= */
+
   useEffect(() => {
     setMobileOpen(false);
   }, [location.pathname]);
+
+  /* =========================================
+     FEATURE ACTIVE STATE
+  ========================================= */
 
   const isFeatureActive =
     location.pathname === "/crop-recommendation" ||
@@ -73,7 +48,9 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ================= MOBILE HAMBURGER ================= */}
+      {/* =========================================
+          MOBILE HAMBURGER
+      ========================================= */}
 
       <button
         type="button"
@@ -87,7 +64,9 @@ export default function Navbar() {
       </button>
 
 
-      {/* ================= MOBILE BACKDROP ================= */}
+      {/* =========================================
+          MOBILE BACKDROP
+      ========================================= */}
 
       <div
         className={
@@ -99,7 +78,9 @@ export default function Navbar() {
       />
 
 
-      {/* ================= SIDEBAR ================= */}
+      {/* =========================================
+          SIDEBAR
+      ========================================= */}
 
       <nav
         className={[
@@ -111,7 +92,9 @@ export default function Navbar() {
           .join(" ")}
       >
 
-        {/* ================= BRAND ================= */}
+        {/* =========================================
+            BRAND
+        ========================================= */}
 
         <div className={styles.brandRow}>
 
@@ -147,7 +130,9 @@ export default function Navbar() {
         </div>
 
 
-        {/* ================= NAVIGATION ================= */}
+        {/* =========================================
+            NAVIGATION
+        ========================================= */}
 
         <ul className={styles.links}>
 
@@ -181,18 +166,22 @@ export default function Navbar() {
           </li>
 
 
-          {/* ================= FEATURES ================= */}
+          {/* =========================================
+              FEATURES
+          ========================================= */}
 
           <li
             className={styles.featureMenu}
-            onMouseEnter={() =>
-              !collapsed &&
-              setFeaturesOpen(true)
-            }
-            onMouseLeave={() =>
-              !collapsed &&
-              setFeaturesOpen(false)
-            }
+            onMouseEnter={() => {
+              if (!collapsed) {
+                setFeaturesOpen(true);
+              }
+            }}
+            onMouseLeave={() => {
+              if (!collapsed) {
+                setFeaturesOpen(false);
+              }
+            }}
           >
 
             <button
@@ -297,7 +286,9 @@ export default function Navbar() {
           </li>
 
 
-          {/* ================= ABOUT ================= */}
+          {/* =========================================
+              ABOUT
+          ========================================= */}
 
           <li>
             <Link
@@ -326,47 +317,35 @@ export default function Navbar() {
             </Link>
           </li>
 
-
-          {/* ================= LOGIN ================= */}
-
-          <li>
-            <Link
-              to="/login"
-              className={[
-                styles.link,
-                location.pathname === "/login"
-                  ? styles.active
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              title="Login"
-              onClick={() =>
-                setMobileOpen(false)
-              }
-            >
-              <span className={styles.linkIcon}>
-                🔑
-              </span>
-
-              <span className={styles.linkLabel}>
-                Login
-              </span>
-            </Link>
-          </li>
-
         </ul>
 
 
-        {/* ================= SPACER ================= */}
+        {/* =========================================
+            EMPTY SPACE
+        ========================================= */}
 
         <div className={styles.spacer} />
 
 
+        {/* =========================================
+            PROFILE
+        ========================================= */}
+
+        <div className={styles.profileSection}>
+          <Profile collapsed={collapsed} />
+        </div>
+
+
+        {/* =========================================
+            DIVIDER
+        ========================================= */}
+
         <div className={styles.divider} />
 
 
-        {/* ================= CTA ================= */}
+        {/* =========================================
+            CTA
+        ========================================= */}
 
         <Link
           to="/signup"
@@ -383,6 +362,10 @@ export default function Navbar() {
           </span>
         </Link>
 
+
+        {/* =========================================
+            FOOTNOTE
+        ========================================= */}
 
         <p className={styles.footNote}>
           Built for Nepali farmers
