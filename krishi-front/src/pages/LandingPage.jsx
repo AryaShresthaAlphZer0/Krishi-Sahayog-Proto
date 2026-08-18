@@ -137,11 +137,11 @@ export default function LandingPage() {
 
             <div className={styles.stat}>
               <p className={styles.statValue}>
-                &lt;5s
+                5
               </p>
 
               <p className={styles.statLabel}>
-                Average result time
+                No of teammates
               </p>
             </div>
 

@@ -5,6 +5,8 @@ import { signupUser } from "../api/auth";
 
 import "./SignupPage.css";
 
+import passIcon from "../assets/icons/pass.png";
+import emailIcon from "../assets/icons/email.png";
 
 function SignupPage() {
 
@@ -351,7 +353,7 @@ function SignupPage() {
               <div className="signup-input-wrapper">
 
                 <span className="signup-input-icon">
-                  ✉
+                  <img src={emailIcon} alt="" />
                 </span>
 
 
@@ -383,7 +385,7 @@ function SignupPage() {
               <div className="signup-input-wrapper">
 
                 <span className="signup-input-icon">
-                  🔒
+                  <img src={passIcon} alt="" />
                 </span>
 
 
@@ -438,7 +440,7 @@ function SignupPage() {
               <div className="signup-input-wrapper">
 
                 <span className="signup-input-icon">
-                  🔐
+                  <img src={passIcon} alt="" />
                 </span>
 
 

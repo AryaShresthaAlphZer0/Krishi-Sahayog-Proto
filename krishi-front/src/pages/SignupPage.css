@@ -653,3 +653,8 @@
     font-size: 13px;
   }
 }
+.signup-input-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}

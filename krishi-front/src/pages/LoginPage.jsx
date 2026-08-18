@@ -5,6 +5,8 @@ import { loginUser } from "../api/auth";
 
 import "./LoginPage.css";
 
+import passIcon from "../assets/icons/pass.png";
+import emailIcon from "../assets/icons/email.png";
 
 function LoginPage() {
 
@@ -274,7 +276,7 @@ function LoginPage() {
               <div className="login-input-wrapper">
 
                 <span className="login-input-icon">
-                  ✉
+                  <img src={emailIcon} alt="" />
                 </span>
 
 
@@ -323,7 +325,7 @@ function LoginPage() {
               <div className="login-input-wrapper">
 
                 <span className="login-input-icon">
-                  🔒
+                  <img src={passIcon} alt="" />
                 </span>
 
 

@@ -698,3 +698,8 @@
     font-size: 13px;
   }
 }
+.login-input-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
