@@ -1,9 +1,8 @@
 import sqlite3
 import os
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify 
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -272,3 +271,96 @@ def login():
             "success": False,
             "message": "Unable to login."
         }), 500
+
+# for changing password
+
+
+@auth_bp.route("/settings/change-password", methods=["POST"])
+def change_password():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({
+                "success": False,
+                "message": "data didnt received."
+            }), 400
+
+        email = data.get("email", "").strip().lower()
+        current_password = data.get("current_password", "")
+        new_password = data.get("new_password", "")
+
+        if not email or not current_password or not new_password:
+            return jsonify({
+                "success": False,
+                "message": "fields are required."
+            }), 400
+
+        if len(new_password) < 8:
+            return jsonify({
+                "success": False,
+                "message": "new password must be of 8 characters."
+            }), 400
+
+        db = get_db()
+
+        user = db.execute(
+            """
+            SELECT id, password
+            FROM users
+            WHERE email = ?
+            """,
+            (email,)
+        ).fetchone()
+
+        if not user:
+            db.close()
+
+            return jsonify({
+                "success": False,
+                "message": "cant found the user."
+            }), 404
+
+        if not check_password_hash(
+            user["password"],
+            current_password
+        ):
+            db.close()
+
+            return jsonify({
+                "success": False,
+                "message": "current password is incorrect."
+            }), 401
+
+        new_hashed_password = generate_password_hash(
+            new_password
+        )
+
+        db.execute(
+            """
+            UPDATE users
+            SET password = ?
+            WHERE id = ?
+            """,
+            (
+                new_hashed_password,
+                user["id"]
+            )
+        )
+
+        db.commit()
+        db.close()
+
+        return jsonify({
+            "success": True,
+            "message": "password changed successfully."
+        }), 200
+
+    except Exception as error:
+
+        print("change password error:", error)
+
+        return jsonify({
+            "success": False,
+            "message": "cant change password."
+        }), 500
+    
