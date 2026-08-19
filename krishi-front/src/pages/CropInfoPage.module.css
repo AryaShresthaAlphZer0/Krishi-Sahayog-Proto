@@ -1,0 +1,373 @@
+/* =========================================================
+   KRISHI SAHAYOG
+   CROP RECOMMENDATION — INFO PAGE
+========================================================= */
+
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+
+  margin-left: var(--sidebar-w);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(102, 187, 106, 0.12),
+      transparent 32%
+    ),
+    var(--background);
+
+  padding: 4rem 6vw;
+
+  transition: margin-left 0.25s ease;
+}
+
+
+.wrapper {
+  width: 100%;
+  max-width: 560px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  text-align: center;
+
+  margin-bottom: 2.5rem;
+}
+
+
+.eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  color: var(--primary);
+
+  font-family: "Courier New", Courier, monospace;
+
+  font-size: 0.82rem;
+
+  font-weight: 500;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 1.2rem;
+}
+
+
+.eyebrow::before {
+  content: "";
+
+  width: 32px;
+  height: 2px;
+
+  background: var(--accent);
+}
+
+
+.title {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+
+  font-weight: 600;
+
+  line-height: 1.1;
+
+  letter-spacing: -0.03em;
+
+  color: #185c2b;
+}
+
+
+.title em {
+  color: var(--accent);
+
+  font-style: italic;
+
+  font-weight: 500;
+}
+
+
+.subtitle {
+  max-width: 440px;
+
+  margin: 1.1rem auto 0;
+
+  color: var(--text-muted);
+
+  font-size: 1rem;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.card {
+  background: var(--white);
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  padding: 2.5rem;
+
+  box-shadow: 0 20px 45px rgba(46, 125, 50, 0.08);
+}
+
+
+.formGroup {
+  margin-bottom: 1.4rem;
+}
+
+
+.formGroup label {
+  display: block;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+
+  margin-bottom: 8px;
+}
+
+
+.formGroup select {
+  width: 100%;
+  height: 52px;
+
+  padding: 0 1rem;
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #fcfdfb;
+
+  color: var(--text-dark);
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+
+  appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+
+  background-position:
+    calc(100% - 20px) center,
+    calc(100% - 15px) center;
+
+  background-size: 5px 5px, 5px 5px;
+
+  background-repeat: no-repeat;
+}
+
+
+.formGroup select:focus {
+  border-color: var(--primary-light);
+
+  background-color: white;
+
+  box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
+}
+
+
+.formGroup select:disabled {
+  background-color: #f2f2ee;
+
+  cursor: not-allowed;
+
+  color: var(--text-muted);
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+.submitBtn {
+  width: 100%;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  height: 54px;
+
+  margin-top: 0.6rem;
+
+  border: none;
+  border-radius: 12px;
+
+  background: var(--primary);
+
+  color: var(--white);
+
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.25);
+
+  transition:
+    transform 0.15s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--primary-light);
+
+  transform: translateY(-2px);
+}
+
+
+.submitBtn:disabled {
+  background: #b9c9b8;
+
+  box-shadow: none;
+
+  cursor: not-allowed;
+}
+
+
+.arrow {
+  transition: transform 0.15s ease;
+}
+
+
+.submitBtn:hover:not(:disabled) .arrow {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   AUTH PROMPT CARD (logged-out users)
+========================================================= */
+
+.authCard {
+  background: var(--white);
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  padding: 3rem 2.5rem;
+
+  text-align: center;
+
+  box-shadow: 0 20px 45px rgba(46, 125, 50, 0.08);
+}
+
+
+.authIcon {
+  font-size: 2.4rem;
+
+  margin-bottom: 1rem;
+}
+
+
+.authTitle {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+
+  font-weight: 600;
+
+  color: #185c2b;
+
+  letter-spacing: -0.02em;
+}
+
+
+.authText {
+  max-width: 420px;
+
+  margin: 0.9rem auto 1.8rem;
+
+  color: var(--text-muted);
+
+  font-size: 0.95rem;
+
+  line-height: 1.65;
+}
+
+
+.authButtons {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 1rem;
+
+  flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .page {
+    margin-left: 0;
+
+    padding: 5.5rem 1.5rem 3rem;
+  }
+
+  .card {
+    padding: 1.75rem;
+  }
+
+  .authCard {
+    padding: 2.25rem 1.5rem;
+  }
+
+  .authButtons {
+    flex-direction: column;
+
+    width: 100%;
+  }
+
+  .authButtons > * {
+    width: 100%;
+  }
+
+}

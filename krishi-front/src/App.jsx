@@ -9,6 +9,8 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
+import CropInfoPage from "./pages/CropInfoPage";
+import CropRecommendationPage from "./pages/CropRecommendationPage";
 
 import Navbar from "./components/Navbar";
 
@@ -62,6 +64,16 @@ function AppContent() {
         <Route
           path="/dashboard"
           element={<DashboardPage />}
+        />
+
+        <Route
+          path="/crop-recommendation"
+          element={<CropInfoPage />}
+        />
+
+        <Route
+          path="/crop-recommendation/results"
+          element={<CropRecommendationPage />}
         />
 
       </Routes>
