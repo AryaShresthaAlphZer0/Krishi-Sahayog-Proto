@@ -1,0 +1,179 @@
+/* =========================================
+   PAGE WRAPPER
+========================================= */
+
+.page {
+  width: 100%;
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero {
+  padding: 6rem 3rem 4rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.titleGreen {
+  color: var(--primary);
+}
+
+.titleAccent {
+  color: var(--accent);
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   SECTION
+========================================= */
+
+.section {
+  padding: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.sectionHead {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.sectionEyebrow {
+  display: block;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 1.2rem;
+  line-height: 1.3;
+}
+
+.sectionText {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.toolsTitle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.toolsTitle em {
+  color: var(--primary);
+  font-style: normal;
+}
+
+
+/* =========================================
+   VALUES GRID
+========================================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.valueCard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.valueCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.valueIcon {
+  display: block;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.valueTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.6rem;
+}
+
+.valueText {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767px) {
+
+  .hero {
+    padding: 4rem 1.5rem 2rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .section {
+    padding: 2rem 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+}

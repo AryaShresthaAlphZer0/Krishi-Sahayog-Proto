@@ -9,38 +9,22 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
+import AboutPage from "./pages/AboutPage";
 
 import Navbar from "./components/Navbar";
 
-
-// =========================================================
-// APP CONTENT
-// =========================================================
 
 function AppContent() {
 
   const location = useLocation();
 
-
-  // Hide navbar/taskbar on authentication pages
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/signup";
 
-
   return (
     <>
-      {/* =========================================
-          NAVBAR / VERTICAL TASKBAR
-          Hidden on Login and Signup
-      ========================================= */}
-
       {!hideNavbar && <Navbar />}
-
-
-      {/* =========================================
-          ROUTES
-      ========================================= */}
 
       <Routes>
 
@@ -64,16 +48,17 @@ function AppContent() {
           element={<DashboardPage />}
         />
 
+        <Route
+          path="/about"
+          element={<AboutPage />}
+        />
+
       </Routes>
 
     </>
   );
 }
 
-
-// =========================================================
-// APP
-// =========================================================
 
 export default function App() {
 

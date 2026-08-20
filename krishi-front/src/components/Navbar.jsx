@@ -290,23 +290,22 @@ export default function Navbar() {
               ABOUT
           ========================================= */}
 
-          <li>
+             <li>
             <Link
-              to="/#about"
-              className={[
-                styles.link,
-                location.pathname === "/" &&
-                location.hash === "#about"
-                  ? styles.active
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              title="About"
-              onClick={() =>
-                setMobileOpen(false)
-              }
-            >
+             to="/about"
+                 className={[
+                    styles.link,
+                 location.pathname === "/about"
+                      ? styles.active
+                   : "",
+                      ]
+                   .filter(Boolean)
+                  .join(" ")}
+                  title="About"
+                   onClick={() =>
+                   setMobileOpen(false)
+                     }
+             >
               <span className={styles.linkIcon}>
                 🌿
               </span>
