@@ -4,6 +4,7 @@ import sqlite3
 from flask import Blueprint, jsonify, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
+
 settings_bp = Blueprint(
     "settings",
     __name__
@@ -42,7 +43,7 @@ def get_db():
 
     return connection
 
-
+# for change password
 @settings_bp.route(
     "/change-password",
     methods=["POST"]
