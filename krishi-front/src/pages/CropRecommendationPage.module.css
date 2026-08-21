@@ -20,7 +20,7 @@
 
 .wrapper {
   width: 100%;
-  max-width: 760px;
+  max-width: 860px;
 
   margin: 0 auto;
 }
@@ -31,7 +31,7 @@
 ========================================================= */
 
 .header {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
 
 
@@ -126,71 +126,450 @@
 
 
 /* =========================================================
-   WEATHER CARD (placeholder)
+   WEATHER BLOCK WRAPPER
 ========================================================= */
 
-.weatherCard {
+.weatherBlock {
+  margin-bottom: 1.75rem;
+}
+
+
+/* =========================================================
+   TODAY HERO
+========================================================= */
+
+.hero {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 22px;
+
+  padding: 2.25rem 2rem;
+
+  background: linear-gradient(
+    135deg,
+    #163f2c 0%,
+    #1f6b42 45%,
+    #3f9d5f 100%
+  );
+
+  color: var(--white);
+
+  box-shadow: 0 24px 50px rgba(22, 63, 44, 0.28);
+}
+
+
+.heroGlowOne,
+.heroGlowTwo {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(40px);
+
+  pointer-events: none;
+}
+
+
+.heroGlowOne {
+  width: 220px;
+  height: 220px;
+
+  top: -80px;
+  right: -60px;
+
+  background: rgba(255, 255, 255, 0.16);
+}
+
+
+.heroGlowTwo {
+  width: 160px;
+  height: 160px;
+
+  bottom: -70px;
+  left: -40px;
+
+  background: rgba(214, 140, 69, 0.28);
+}
+
+
+.heroTop {
+  position: relative;
+
+  z-index: 1;
+}
+
+
+.heroEyebrow {
+  display: block;
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+
+  color: rgba(255, 255, 255, 0.75);
+
+  margin-bottom: 0.9rem;
+}
+
+
+.heroTempRow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+}
+
+
+.heroIcon {
+  font-size: 3.4rem;
+
+  line-height: 1;
+}
+
+
+.heroTemp {
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 4rem;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: -0.02em;
+}
+
+
+.heroCondition {
+  display: block;
+
+  margin-top: 0.5rem;
+
+  font-size: 1.05rem;
+
+  font-weight: 500;
+
+  color: rgba(255, 255, 255, 0.9);
+}
+
+
+.heroStats {
+  position: relative;
+
+  z-index: 1;
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+
+  gap: 0.75rem;
+
+  margin-top: 2rem;
+}
+
+
+.statChip {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.3rem;
+
+  padding: 0.9rem 0.6rem;
+
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(6px);
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  text-align: center;
+}
+
+
+.statLabel {
+  font-size: 0.72rem;
+
+  font-weight: 500;
+
+  letter-spacing: 0.02em;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+.statValue {
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  color: var(--white);
+}
+
+
+/* =========================================================
+   NEXT 6 DAYS
+========================================================= */
+
+.forecastSection {
+  margin-top: 1.5rem;
+}
+
+
+.forecastHeading {
+  margin: 0 0 0.9rem;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 1.1rem;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+}
+
+
+.forecastStrip {
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 0.75rem;
+}
+
+
+.dayCard {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.35rem;
+
+  padding: 1.1rem 0.5rem 1.25rem;
+
+  border-radius: 16px;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+
+  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.06);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+
+.dayCard:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 14px 28px rgba(46, 125, 50, 0.12);
+}
+
+
+.dayName {
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  color: var(--text-dark);
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.02em;
+}
+
+
+.dayIcon {
+  font-size: 1.6rem;
+
+  margin: 0.15rem 0;
+}
+
+
+.dayHigh {
+  font-size: 1.05rem;
+
+  font-weight: 700;
+
+  color: var(--text-dark);
+}
+
+
+.dayLow {
+  font-size: 0.85rem;
+
+  color: var(--text-muted);
+
+  margin-top: -0.2rem;
+}
+
+
+.dayRain {
+  margin-top: 0.35rem;
+
+  font-size: 0.72rem;
+
+  color: #1f6b8a;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   WEATHER — LOADING SKELETON
+========================================================= */
+
+.weatherSkeleton {
+  margin-bottom: 1.75rem;
+}
+
+
+.skeletonHero {
+  height: 210px;
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  background: #e7efe6;
+
+  margin-bottom: 1.5rem;
+}
+
+
+.skeletonStrip {
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 0.75rem;
+}
+
+
+.skeletonDay {
+  height: 150px;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  background: #e7efe6;
+}
+
+
+.skeletonPulse {
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+
+  background-size: 200% 100%;
+
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+
+@keyframes shimmer {
+
+  0% {
+    background-position: 150% 0;
+  }
+
+  100% {
+    background-position: -50% 0;
+  }
+
+}
+
+
+/* =========================================================
+   WEATHER — ERROR
+========================================================= */
+
+.weatherErrorCard {
   background: var(--white);
 
   border: 1px dashed var(--border);
 
   border-radius: 18px;
 
-  padding: 3rem 2rem;
+  padding: 2.5rem 2rem;
 
   text-align: center;
 
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 
-.weatherIcon {
-  font-size: 2.6rem;
+.weatherErrorIcon {
+  font-size: 2.2rem;
 
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 
-.weatherTitle {
+.weatherErrorTitle {
   margin: 0;
 
   font-family: Georgia, "Times New Roman", serif;
 
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 
   color: var(--text-dark);
 }
 
 
-.weatherText {
-  max-width: 480px;
+.weatherErrorText {
+  max-width: 420px;
 
-  margin: 0.8rem auto 1.4rem;
+  margin: 0.6rem auto 1.2rem;
 
   color: var(--text-muted);
 
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 
-.badge {
-  display: inline-block;
+.retryBtn {
+  border: none;
+  border-radius: 10px;
 
-  padding: 0.4rem 0.9rem;
+  padding: 0.6rem 1.4rem;
 
-  border-radius: 999px;
+  background: var(--primary);
 
-  background: rgba(242, 169, 59, 0.15);
+  color: var(--white);
 
-  color: #8a5a10;
-
-  font-size: 0.78rem;
-
+  font-size: 0.9rem;
   font-weight: 600;
+  font-family: inherit;
 
-  letter-spacing: 0.03em;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+
+.retryBtn:hover {
+  background: var(--primary-light);
 }
 
 
@@ -237,6 +616,20 @@
    MOBILE
 ========================================================= */
 
+@media (max-width: 900px) {
+
+  .heroStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .forecastStrip,
+  .skeletonStrip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+
 @media (max-width: 767px) {
 
   .page {
@@ -245,8 +638,21 @@
     padding: 5.5rem 1.5rem 3rem;
   }
 
-  .weatherCard {
-    padding: 2.25rem 1.5rem;
+  .hero {
+    padding: 1.75rem 1.4rem;
+  }
+
+  .heroTemp {
+    font-size: 3.2rem;
+  }
+
+  .heroIcon {
+    font-size: 2.6rem;
+  }
+
+  .forecastStrip,
+  .skeletonStrip {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .resultCard {
