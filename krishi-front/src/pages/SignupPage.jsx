@@ -5,8 +5,6 @@ import { signupUser } from "../api/auth";
 
 import "./SignupPage.css";
 
-import passIcon from "../assets/icons/pass.png";
-import emailIcon from "../assets/icons/email.png";
 
 function SignupPage() {
 
@@ -74,8 +72,8 @@ function SignupPage() {
       if (data.success) {
 
         /*
-         * If your backend returns the
-         * newly created user, save it.
+         * Save the new account + auth tokens so the user is
+         * immediately logged in after signing up.
          */
 
         if (data.user) {
@@ -83,6 +81,24 @@ function SignupPage() {
           localStorage.setItem(
             "user",
             JSON.stringify(data.user)
+          );
+
+        }
+
+        if (data.access_token) {
+
+          localStorage.setItem(
+            "access_token",
+            data.access_token
+          );
+
+        }
+
+        if (data.refresh_token) {
+
+          localStorage.setItem(
+            "refresh_token",
+            data.refresh_token
           );
 
         }
@@ -353,7 +369,7 @@ function SignupPage() {
               <div className="signup-input-wrapper">
 
                 <span className="signup-input-icon">
-                  <img src={emailIcon} alt="" />
+                  ✉
                 </span>
 
 
@@ -385,7 +401,7 @@ function SignupPage() {
               <div className="signup-input-wrapper">
 
                 <span className="signup-input-icon">
-                  <img src={passIcon} alt="" />
+                  🔒
                 </span>
 
 
@@ -440,7 +456,7 @@ function SignupPage() {
               <div className="signup-input-wrapper">
 
                 <span className="signup-input-icon">
-                  <img src={passIcon} alt="" />
+                  🔐
                 </span>
 
 

@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 
+import { getCropLocation } from "../api/cropLocation";
 import { getWeather } from "../api/weather";
 import {
   getWeatherInfo,
@@ -17,52 +18,84 @@ export default function CropRecommendationPage() {
 
 
   // =========================================================
-  // FALL BACK TO SAVED LOCATION
-  // Router state is lost on a page refresh, so fall back to
-  // the logged-in user's saved crop location in that case.
+  // RESOLVE THE LOCATION
+  // Router state is the fast path (set when arriving from the
+  // info form). If it's missing — e.g. the page was refreshed —
+  // fall back to asking the backend for the saved location.
   // =========================================================
 
-  const fallbackLocation = useMemo(() => {
+  const [resolvedLocation, setResolvedLocation] = useState(
+    location.state || null
+  );
 
-    try {
+  const [resolving, setResolving] = useState(!location.state);
 
-      const user = JSON.parse(
-        localStorage.getItem("user")
-      );
 
-      if (!user) {
-        return null;
-      }
+  useEffect(() => {
 
-      const raw = localStorage.getItem(
-        `krishi_crop_location_${user.id}`
-      );
-
-      return raw ? JSON.parse(raw) : null;
-
-    } catch {
-
-      return null;
+    if (location.state) {
+      return;
     }
 
-  }, []);
+    let cancelled = false;
 
-  const { province, district } =
-    location.state || fallbackLocation || {};
+    async function resolve() {
+
+      try {
+
+        const data = await getCropLocation();
+
+        if (cancelled) {
+          return;
+        }
+
+        if (data?.location) {
+          setResolvedLocation(data.location);
+        } else {
+          navigate("/crop-recommendation", { replace: true });
+        }
+
+      } catch {
+
+        if (cancelled) {
+          return;
+        }
+
+        navigate("/crop-recommendation", { replace: true });
+
+      } finally {
+
+        if (!cancelled) {
+          setResolving(false);
+        }
+      }
+    }
+
+    resolve();
+
+    return () => {
+      cancelled = true;
+    };
+
+  }, [location.state, navigate]);
+
+
+  const { province, district } = resolvedLocation || {};
 
 
   // =========================================================
-  // GUARD — send the user back if there's no location on
-  // file at all (guests, or logged-in users with none saved)
+  // GUARD — send the user back if there's no location at all
+  // once resolution has finished (guests, or accounts with
+  // nothing saved yet)
   // =========================================================
 
   useEffect(() => {
 
-    if (!province || !district) {
+    if (!resolving && (!province || !district)) {
       navigate("/crop-recommendation", { replace: true });
     }
 
-  }, [province, district, navigate]);
+  }, [resolving, province, district, navigate]);
 
 
   // =========================================================
@@ -117,7 +150,7 @@ export default function CropRecommendationPage() {
   }, [province, district, retryCount]);
 
 
-  if (!province || !district) {
+  if (resolving || !province || !district) {
     return null;
   }
 

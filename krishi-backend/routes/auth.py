@@ -1,60 +1,39 @@
-import sqlite3
-import os
+import re
 
 from flask import Blueprint, request, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import (
+    create_access_token,
+    create_refresh_token,
+    jwt_required,
+    get_jwt_identity,
+)
+
+from database.db import db
+from database.models import User
+from extensions import limiter
+from utils.auth import hash_password, verify_password
 
 
 auth_bp = Blueprint("auth", __name__)
 
 
-# =========================================================
-# DATABASE
-# =========================================================
+EMAIL_PATTERN = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-INSTANCE_DIR = os.path.join(
-    BASE_DIR,
-    "instance"
-)
-
-DATABASE = os.path.join(
-    INSTANCE_DIR,
-    "krishi.db"
-)
+MAX_NAME_LENGTH = 100
+MAX_EMAIL_LENGTH = 120
 
 
-def get_db():
-    os.makedirs(INSTANCE_DIR, exist_ok=True)
+def _issue_tokens(user):
+    """Build the token pair + public user payload returned on
+    both signup and login."""
 
-    connection = sqlite3.connect(DATABASE)
+    identity = str(user.id)
 
-    connection.row_factory = sqlite3.Row
-
-    return connection
-
-
-def init_db():
-
-    db = get_db()
-
-    db.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
-        )
-    """)
-
-    db.commit()
-
-    db.close()
-
-
-# Create database/table when backend starts
-init_db()
+    return {
+        "access_token": create_access_token(identity=identity),
+        "refresh_token": create_refresh_token(identity=identity),
+        "user": user.to_public_dict(),
+    }
 
 
 # =========================================================
@@ -62,11 +41,12 @@ init_db()
 # =========================================================
 
 @auth_bp.route("/signup", methods=["POST"])
+@limiter.limit("10 per hour")
 def signup():
 
     try:
 
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
         if not data:
             return jsonify({
@@ -80,7 +60,7 @@ def signup():
         password = data.get("password", "")
 
 
-        # Validate fields
+        # ---- Validation ----
 
         if not name:
             return jsonify({
@@ -88,6 +68,11 @@ def signup():
                 "message": "Name is required."
             }), 400
 
+        if len(name) > MAX_NAME_LENGTH:
+            return jsonify({
+                "success": False,
+                "message": "Name is too long."
+            }), 400
 
         if not email:
             return jsonify({
@@ -95,13 +80,17 @@ def signup():
                 "message": "Email is required."
             }), 400
 
+        if len(email) > MAX_EMAIL_LENGTH or not EMAIL_PATTERN.match(email):
+            return jsonify({
+                "success": False,
+                "message": "Please enter a valid email address."
+            }), 400
 
         if not password:
             return jsonify({
                 "success": False,
                 "message": "Password is required."
             }), 400
-
 
         if len(password) < 8:
             return jsonify({
@@ -110,70 +99,35 @@ def signup():
             }), 400
 
 
-        db = get_db()
+        # ---- Create user ----
 
-
-        # Check whether email already exists
-
-        existing_user = db.execute(
-            "SELECT id FROM users WHERE email = ?",
-            (email,)
-        ).fetchone()
-
+        existing_user = User.query.filter_by(email=email).first()
 
         if existing_user:
-
-            db.close()
-
             return jsonify({
                 "success": False,
                 "message": "An account with this email already exists."
             }), 409
 
-
-        # Hash password before storing it
-
-        hashed_password = generate_password_hash(
-            password
+        user = User(
+            name=name,
+            email=email,
+            password_hash=hash_password(password),
         )
 
-
-        # Insert user
-
-        cursor = db.execute(
-            """
-            INSERT INTO users
-            (name, email, password)
-            VALUES (?, ?, ?)
-            """,
-            (
-                name,
-                email,
-                hashed_password
-            )
-        )
-
-
-        db.commit()
-
-
-        user_id = cursor.lastrowid
-
-        db.close()
-
+        db.session.add(user)
+        db.session.commit()
 
         return jsonify({
             "success": True,
             "message": "Account created successfully.",
-            "user": {
-                "id": user_id,
-                "name": name,
-                "email": email
-            }
+            **_issue_tokens(user),
         }), 201
 
 
     except Exception as error:
+
+        db.session.rollback()
 
         print("SIGNUP ERROR:", error)
 
@@ -188,79 +142,47 @@ def signup():
 # =========================================================
 
 @auth_bp.route("/login", methods=["POST"])
+@limiter.limit("10 per minute")
 def login():
 
     try:
 
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
         if not data:
-
             return jsonify({
                 "success": False,
                 "message": "No data received."
             }), 400
 
-
         email = data.get("email", "").strip().lower()
         password = data.get("password", "")
 
-
         if not email or not password:
-
             return jsonify({
                 "success": False,
                 "message": "Email and password are required."
             }), 400
 
+        user = User.query.filter_by(email=email).first()
 
-        db = get_db()
-
-
-        user = db.execute(
-            """
-            SELECT id, name, email, password
-            FROM users
-            WHERE email = ?
-            """,
-            (email,)
-        ).fetchone()
-
-
-        db.close()
-
-
-        # User doesn't exist
+        # Same generic message whether the email doesn't exist or
+        # the password is wrong — never reveal which one it was.
+        invalid_credentials = jsonify({
+            "success": False,
+            "message": "Invalid email or password."
+        }), 401
 
         if not user:
+            return invalid_credentials
 
-            return jsonify({
-                "success": False,
-                "message": "Invalid email or password."
-            }), 401
-
-
-        # Check password
-
-        if not check_password_hash(
-            user["password"],
-            password
-        ):
-
-            return jsonify({
-                "success": False,
-                "message": "Invalid email or password."
-            }), 401
-
+        if not verify_password(user.password_hash, password):
+            return invalid_credentials
 
         return jsonify({
             "success": True,
             "message": "Login successful.",
-            "user": {
-                "id": user["id"],
-                "name": user["name"],
-                "email": user["email"]
-            }
+            **_issue_tokens(user),
         }), 200
 
 
@@ -272,3 +194,54 @@ def login():
             "success": False,
             "message": "Unable to login."
         }), 500
+
+
+# =========================================================
+# CURRENT USER
+# =========================================================
+
+@auth_bp.route("/me", methods=["GET"])
+@jwt_required()
+def me():
+
+    try:
+
+        user_id = int(get_jwt_identity())
+
+        user = db.session.get(User, user_id)
+
+        if not user:
+            return jsonify({
+                "success": False,
+                "message": "User not found."
+            }), 404
+
+        return jsonify({
+            "success": True,
+            "user": user.to_public_dict(),
+        }), 200
+
+    except Exception as error:
+
+        print("ME ERROR:", error)
+
+        return jsonify({
+            "success": False,
+            "message": "Unable to fetch account details."
+        }), 500
+
+
+# =========================================================
+# REFRESH ACCESS TOKEN
+# =========================================================
+
+@auth_bp.route("/refresh", methods=["POST"])
+@jwt_required(refresh=True)
+def refresh():
+
+    identity = get_jwt_identity()
+
+    return jsonify({
+        "success": True,
+        "access_token": create_access_token(identity=identity),
+    }), 200

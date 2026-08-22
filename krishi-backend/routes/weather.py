@@ -1,6 +1,11 @@
+import time
+
 import requests
 
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required
+
+from extensions import limiter
 
 
 weather_bp = Blueprint("weather", __name__)
@@ -14,6 +19,43 @@ weather_bp = Blueprint("weather", __name__)
 
 GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
+
+
+# =========================================================
+# SIMPLE IN-PROCESS CACHE
+# Weather doesn't change second to second, and every district
+# only has a handful of possible query values, so caching by
+# district avoids hammering Open-Meteo on repeat visits.
+#
+# NOTE: this cache lives in one process's memory. It's ideal
+# for a single dev/worker process. If this is ever deployed
+# behind multiple gunicorn/uwsgi workers, each worker keeps its
+# own cache — switch this to Redis (or similar shared store) at
+# that point so all workers share one cache.
+# =========================================================
+
+_CACHE_TTL_SECONDS = 20 * 60  # 20 minutes
+_weather_cache = {}
+
+
+def _get_cached(key):
+
+    entry = _weather_cache.get(key)
+
+    if not entry:
+        return None
+
+    cached_at, payload = entry
+
+    if time.time() - cached_at > _CACHE_TTL_SECONDS:
+        _weather_cache.pop(key, None)
+        return None
+
+    return payload
+
+
+def _set_cached(key, payload):
+    _weather_cache[key] = (time.time(), payload)
 
 
 def geocode(query):
@@ -53,9 +95,14 @@ def resolve_district(district):
 
 # =========================================================
 # GET /api/weather?province=X&district=Y
+# Requires a logged-in user — this endpoint proxies a free
+# third-party API on your behalf, so it's rate limited and
+# gated behind auth to prevent it being used as an open relay.
 # =========================================================
 
 @weather_bp.route("", methods=["GET"])
+@jwt_required()
+@limiter.limit("30 per minute")
 def get_weather():
 
     province = request.args.get("province", "").strip()
@@ -66,6 +113,13 @@ def get_weather():
             "success": False,
             "message": "district is required."
         }), 400
+
+    cache_key = district.lower()
+
+    cached = _get_cached(cache_key)
+
+    if cached:
+        return jsonify(cached), 200
 
     try:
 
@@ -126,7 +180,7 @@ def get_weather():
 
         current = forecast_data.get("current_weather", {})
 
-        return jsonify({
+        payload = {
             "success": True,
             "location": {
                 "district": district,
@@ -143,7 +197,11 @@ def get_weather():
                 "time": current.get("time"),
             },
             "days": days,
-        }), 200
+        }
+
+        _set_cached(cache_key, payload)
+
+        return jsonify(payload), 200
 
     except requests.exceptions.RequestException as error:
 

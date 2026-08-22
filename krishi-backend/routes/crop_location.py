@@ -1,88 +1,32 @@
-import sqlite3
-import os
-from datetime import datetime
-
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
+from database.db import db
+from database.models import CropLocation
 
 
 crop_location_bp = Blueprint("crop_location", __name__)
 
 
 # =========================================================
-# DATABASE
-# (same krishi.db file used by routes/auth.py)
-# =========================================================
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-INSTANCE_DIR = os.path.join(
-    BASE_DIR,
-    "instance"
-)
-
-DATABASE = os.path.join(
-    INSTANCE_DIR,
-    "krishi.db"
-)
-
-
-def get_db():
-    os.makedirs(INSTANCE_DIR, exist_ok=True)
-
-    connection = sqlite3.connect(DATABASE)
-
-    connection.row_factory = sqlite3.Row
-
-    return connection
-
-
-def init_db():
-
-    db = get_db()
-
-    db.execute("""
-        CREATE TABLE IF NOT EXISTS crop_locations (
-            user_id INTEGER PRIMARY KEY,
-            province TEXT NOT NULL,
-            district TEXT NOT NULL,
-            updated_at TEXT NOT NULL,
-            FOREIGN KEY (user_id) REFERENCES users (id)
-        )
-    """)
-
-    db.commit()
-
-    db.close()
-
-
-# Create table when the app starts
-init_db()
-
-
-# =========================================================
 # GET SAVED LOCATION
-# GET /api/crop-location/<user_id>
+# GET /api/crop-location
+# Returns the *authenticated* user's saved location — never
+# accepts a user id from the client, so one account can never
+# read another account's data.
 # =========================================================
 
-@crop_location_bp.route("/<int:user_id>", methods=["GET"])
-def get_crop_location(user_id):
+@crop_location_bp.route("", methods=["GET"])
+@jwt_required()
+def get_crop_location():
 
     try:
 
-        db = get_db()
+        user_id = int(get_jwt_identity())
 
-        row = db.execute(
-            """
-            SELECT province, district
-            FROM crop_locations
-            WHERE user_id = ?
-            """,
-            (user_id,)
-        ).fetchone()
+        location = db.session.get(CropLocation, user_id)
 
-        db.close()
-
-        if not row:
+        if not location:
             return jsonify({
                 "success": True,
                 "location": None
@@ -90,10 +34,7 @@ def get_crop_location(user_id):
 
         return jsonify({
             "success": True,
-            "location": {
-                "province": row["province"],
-                "district": row["district"]
-            }
+            "location": location.to_public_dict(),
         }), 200
 
     except Exception as error:
@@ -109,15 +50,17 @@ def get_crop_location(user_id):
 # =========================================================
 # SAVE / UPDATE LOCATION
 # PUT /api/crop-location
-# body: { user_id, province, district }
+# body: { province, district }
+# The user is identified from the JWT — not from the body.
 # =========================================================
 
 @crop_location_bp.route("", methods=["PUT"])
+@jwt_required()
 def save_crop_location():
 
     try:
 
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
         if not data:
             return jsonify({
@@ -125,18 +68,8 @@ def save_crop_location():
                 "message": "No data received."
             }), 400
 
-
-        user_id = data.get("user_id")
         province = (data.get("province") or "").strip()
         district = (data.get("district") or "").strip()
-
-
-        if not user_id:
-            return jsonify({
-                "success": False,
-                "message": "user_id is required."
-            }), 400
-
 
         if not province or not district:
             return jsonify({
@@ -144,61 +77,38 @@ def save_crop_location():
                 "message": "Province and district are required."
             }), 400
 
-
-        db = get_db()
-
-
-        # Confirm the user actually exists
-
-        user = db.execute(
-            "SELECT id FROM users WHERE id = ?",
-            (user_id,)
-        ).fetchone()
-
-        if not user:
-
-            db.close()
-
+        if len(province) > 80 or len(district) > 80:
             return jsonify({
                 "success": False,
-                "message": "User not found."
-            }), 404
+                "message": "Province/district name is too long."
+            }), 400
 
+        user_id = int(get_jwt_identity())
 
-        # Upsert — one saved location per user
+        location = db.session.get(CropLocation, user_id)
 
-        db.execute(
-            """
-            INSERT INTO crop_locations
-                (user_id, province, district, updated_at)
-            VALUES (?, ?, ?, ?)
-            ON CONFLICT(user_id) DO UPDATE SET
-                province = excluded.province,
-                district = excluded.district,
-                updated_at = excluded.updated_at
-            """,
-            (
-                user_id,
-                province,
-                district,
-                datetime.utcnow().isoformat()
+        if location:
+            location.province = province
+            location.district = district
+        else:
+            location = CropLocation(
+                user_id=user_id,
+                province=province,
+                district=district,
             )
-        )
+            db.session.add(location)
 
-        db.commit()
-
-        db.close()
+        db.session.commit()
 
         return jsonify({
             "success": True,
             "message": "Location saved.",
-            "location": {
-                "province": province,
-                "district": district
-            }
+            "location": location.to_public_dict(),
         }), 200
 
     except Exception as error:
+
+        db.session.rollback()
 
         print("SAVE CROP LOCATION ERROR:", error)
 

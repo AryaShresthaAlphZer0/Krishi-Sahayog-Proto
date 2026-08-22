@@ -6,47 +6,9 @@ import {
 
 import NEPAL_LOCATIONS from "../data/nepalLocations";
 import Button from "../components/Button";
+import { getCropLocation, saveCropLocation } from "../api/cropLocation";
 
 import styles from "./CropInfoPage.module.css";
-
-
-// =========================================================
-// LOCAL STORAGE HELPERS
-// (crop location is remembered per logged-in user)
-// =========================================================
-
-function getStoredLocation(userId) {
-
-  if (!userId) {
-    return null;
-  }
-
-  try {
-
-    const raw = localStorage.getItem(
-      `krishi_crop_location_${userId}`
-    );
-
-    return raw ? JSON.parse(raw) : null;
-
-  } catch {
-
-    return null;
-  }
-}
-
-
-function saveStoredLocation(userId, location) {
-
-  if (!userId) {
-    return;
-  }
-
-  localStorage.setItem(
-    `krishi_crop_location_${userId}`,
-    JSON.stringify(location)
-  );
-}
 
 
 export default function CropInfoPage() {
@@ -61,52 +23,98 @@ export default function CropInfoPage() {
 
 
   // =========================================================
-  // AUTH + SAVED LOCATION
+  // "checking"  — figuring out whether they're logged in and
+  //               whether they already have a saved location
+  // "guest"     — not logged in, show the login prompt
+  // "form"      — logged in, show the province/district form
   // =========================================================
 
-  const user = useMemo(() => {
+  const [status, setStatus] = useState("checking");
 
-    try {
-      return JSON.parse(
-        localStorage.getItem("user")
-      );
-    } catch {
-      return null;
-    }
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
 
-  }, []);
+  const [loadError, setLoadError] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(null);
 
-  const isLoggedIn = !!user;
 
-  const savedLocation = useMemo(
-    () => getStoredLocation(user?.id),
-    [user]
-  );
-
-  const shouldAutoRedirect =
-    isLoggedIn && !!savedLocation && !forceEdit;
-
+  // =========================================================
+  // ON MOUNT — check login state, then ask the backend
+  // whether this account already has a saved location
+  // =========================================================
 
   useEffect(() => {
 
-    if (shouldAutoRedirect) {
+    let cancelled = false;
 
-      navigate("/crop-recommendation/results", {
-        replace: true,
-        state: savedLocation,
-      });
+    async function init() {
+
+      const hasUser = !!localStorage.getItem("user");
+
+      if (!hasUser) {
+        if (!cancelled) {
+          setStatus("guest");
+        }
+        return;
+      }
+
+      try {
+
+        const data = await getCropLocation();
+
+        if (cancelled) {
+          return;
+        }
+
+        const location = data?.location || null;
+
+        if (location && !forceEdit) {
+
+          // Already has a saved location — skip straight to
+          // the results page instead of showing the form again
+          navigate("/crop-recommendation/results", {
+            replace: true,
+            state: location,
+          });
+
+          return;
+        }
+
+        if (location) {
+          setProvince(location.province);
+          setDistrict(location.district);
+        }
+
+        setStatus("form");
+
+      } catch {
+
+        if (cancelled) {
+          return;
+        }
+
+        // If the account truly isn't authenticated anymore,
+        // axiosClient's own interceptor already handles clearing
+        // storage and redirecting to /login. Any other failure
+        // (network hiccup, server error) shouldn't block them
+        // from filling out the form manually.
+        setLoadError(
+          "Couldn't check your saved location, but you can " +
+          "still continue below."
+        );
+
+        setStatus("form");
+      }
     }
 
-  }, [shouldAutoRedirect, navigate, savedLocation]);
+    init();
 
+    return () => {
+      cancelled = true;
+    };
 
-  const [province, setProvince] = useState(
-    savedLocation?.province || ""
-  );
-
-  const [district, setDistrict] = useState(
-    savedLocation?.district || ""
-  );
+  }, [forceEdit, navigate]);
 
 
   // =========================================================
@@ -133,33 +141,56 @@ export default function CropInfoPage() {
   }
 
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
 
     event.preventDefault();
 
-    if (!province || !district) {
+    if (!province || !district || saving) {
       return;
     }
 
-    const location = { province, district };
+    setSaving(true);
+    setSaveError(null);
 
-    saveStoredLocation(user?.id, location);
+    try {
 
-    navigate("/crop-recommendation/results", {
-      state: location,
-    });
+      await saveCropLocation(province, district);
+
+      navigate("/crop-recommendation/results", {
+        state: { province, district },
+      });
+
+    } catch (error) {
+
+      setSaveError(
+        error?.response?.data?.message ||
+        "Couldn't save your location. Please try again."
+      );
+
+      setSaving(false);
+    }
   }
 
 
-  const canSubmit = province && district;
+  const canSubmit = province && district && !saving;
 
 
   // =========================================================
-  // ALREADY REDIRECTING — render nothing to avoid a form flash
+  // CHECKING — avoid flashing the wrong UI while we figure
+  // out login state / saved location
   // =========================================================
 
-  if (shouldAutoRedirect) {
-    return null;
+  if (status === "checking") {
+
+    return (
+      <div className={styles.page}>
+        <div className={styles.wrapper}>
+          <p className={styles.checkingText}>
+            Checking your account…
+          </p>
+        </div>
+      </div>
+    );
   }
 
 
@@ -167,7 +198,7 @@ export default function CropInfoPage() {
   // NOT LOGGED IN — ask the user to log in first
   // =========================================================
 
-  if (!isLoggedIn) {
+  if (status === "guest") {
 
     return (
       <div className={styles.page}>
@@ -231,10 +262,16 @@ export default function CropInfoPage() {
           </h1>
 
           <p className={styles.subtitle}>
-            {savedLocation
+            {forceEdit
               ? "Update your saved location below."
               : "Tell us your province and district so we can tailor crop suggestions to your local soil and climate."}
           </p>
+
+          {loadError && (
+            <p className={styles.inlineWarning}>
+              {loadError}
+            </p>
+          )}
 
         </div>
 
@@ -316,6 +353,13 @@ export default function CropInfoPage() {
           </div>
 
 
+          {saveError && (
+            <p className={styles.formError}>
+              {saveError}
+            </p>
+          )}
+
+
           {/* SUBMIT */}
 
           <button
@@ -323,8 +367,10 @@ export default function CropInfoPage() {
             className={styles.submitBtn}
             disabled={!canSubmit}
           >
-            Continue
-            <span className={styles.arrow}>→</span>
+            {saving ? "Saving…" : "Continue"}
+            {!saving && (
+              <span className={styles.arrow}>→</span>
+            )}
           </button>
 
         </form>

@@ -275,6 +275,57 @@
 
 
 /* =========================================================
+   CHECKING / LOAD & SAVE MESSAGES
+========================================================= */
+
+.checkingText {
+  text-align: center;
+
+  color: var(--text-muted);
+
+  font-size: 0.95rem;
+
+  padding: 3rem 0;
+}
+
+
+.inlineWarning {
+  max-width: 440px;
+
+  margin: 0.9rem auto 0;
+
+  padding: 0.6rem 1rem;
+
+  border-radius: 10px;
+
+  background: rgba(214, 140, 69, 0.12);
+
+  color: #8a5a10;
+
+  font-size: 0.85rem;
+
+  line-height: 1.5;
+}
+
+
+.formError {
+  margin: -0.4rem 0 1rem;
+
+  padding: 0.6rem 1rem;
+
+  border-radius: 10px;
+
+  background: rgba(200, 60, 60, 0.1);
+
+  color: #a33;
+
+  font-size: 0.85rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
    AUTH PROMPT CARD (logged-out users)
 ========================================================= */
 

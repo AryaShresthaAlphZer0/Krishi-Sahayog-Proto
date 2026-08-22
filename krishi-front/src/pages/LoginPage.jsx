@@ -5,8 +5,6 @@ import { loginUser } from "../api/auth";
 
 import "./LoginPage.css";
 
-import passIcon from "../assets/icons/pass.png";
-import emailIcon from "../assets/icons/email.png";
 
 function LoginPage() {
 
@@ -47,10 +45,20 @@ function LoginPage() {
 
       if (data.success) {
 
-        // Save logged-in user
+        // Save logged-in user + auth tokens
         localStorage.setItem(
           "user",
           JSON.stringify(data.user)
+        );
+
+        localStorage.setItem(
+          "access_token",
+          data.access_token
+        );
+
+        localStorage.setItem(
+          "refresh_token",
+          data.refresh_token
         );
 
 
@@ -276,7 +284,7 @@ function LoginPage() {
               <div className="login-input-wrapper">
 
                 <span className="login-input-icon">
-                  <img src={emailIcon} alt="" />
+                  ✉
                 </span>
 
 
@@ -325,7 +333,7 @@ function LoginPage() {
               <div className="login-input-wrapper">
 
                 <span className="login-input-icon">
-                  <img src={passIcon} alt="" />
+                  🔒
                 </span>
 
 

@@ -29,6 +29,10 @@ export default function DashboardPage() {
         );
 
         localStorage.removeItem(
+          "refresh_token"
+        );
+
+        localStorage.removeItem(
           "user"
         );
 
@@ -51,6 +55,10 @@ export default function DashboardPage() {
 
     localStorage.removeItem(
       "access_token"
+    );
+
+    localStorage.removeItem(
+      "refresh_token"
     );
 
     localStorage.removeItem(
