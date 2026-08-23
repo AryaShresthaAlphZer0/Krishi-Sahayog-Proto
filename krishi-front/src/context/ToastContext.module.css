@@ -1,0 +1,34 @@
+.toastLayer {
+  position: fixed;
+
+  top: 20px;
+  right: 20px;
+
+  z-index: 9999;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+  pointer-events: none;
+}
+
+
+.toastLayer > * {
+  pointer-events: auto;
+}
+
+
+@media (max-width: 600px) {
+
+  .toastLayer {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+
+    align-items: center;
+  }
+
+}

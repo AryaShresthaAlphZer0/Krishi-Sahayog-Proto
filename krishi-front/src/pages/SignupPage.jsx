@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { signupUser } from "../api/auth";
+import { useToast } from "../context/useToast";
 
 import "./SignupPage.css";
 
 
 function SignupPage() {
+
+  const { showToast } = useToast();
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -49,8 +52,9 @@ function SignupPage() {
     // Check passwords
     if (password !== confirmPassword) {
 
-      alert(
-        "Passwords do not match."
+      showToast(
+        "Passwords do not match.",
+        "error"
       );
 
       return;
@@ -104,8 +108,9 @@ function SignupPage() {
         }
 
 
-        alert(
-          "Account created successfully!"
+        showToast(
+          "Account created successfully!",
+          "success"
         );
 
 
@@ -118,9 +123,9 @@ function SignupPage() {
 
       } else {
 
-        alert(
-          data.message ||
-          "Unable to create account."
+        showToast(
+          data.message || "Unable to create account.",
+          "error"
         );
 
       }
@@ -136,15 +141,17 @@ function SignupPage() {
 
       if (error.response) {
 
-        alert(
+        showToast(
           error.response.data.message ||
-          "Unable to create account."
+          "Unable to create account.",
+          "error"
         );
 
       } else {
 
-        alert(
-          "Unable to connect to the server."
+        showToast(
+          "Unable to connect to the server.",
+          "error"
         );
 
       }

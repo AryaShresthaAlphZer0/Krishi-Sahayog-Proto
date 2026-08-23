@@ -2,11 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { loginUser } from "../api/auth";
+import { useToast } from "../context/useToast";
 
 import "./LoginPage.css";
 
 
 function LoginPage() {
+
+  const { showToast } = useToast();
 
   const [showPassword, setShowPassword] =
     useState(false);
@@ -67,9 +70,9 @@ function LoginPage() {
 
       } else {
 
-        alert(
-          data.message ||
-          "Invalid credentials."
+        showToast(
+          data.message || "Invalid credentials.",
+          "error"
         );
 
       }
@@ -84,15 +87,17 @@ function LoginPage() {
 
       if (error.response) {
 
-        alert(
+        showToast(
           error.response.data.message ||
-          "Invalid email or password."
+          "Invalid email or password.",
+          "error"
         );
 
       } else {
 
-        alert(
-          "Unable to connect to the server."
+        showToast(
+          "Unable to connect to the server.",
+          "error"
         );
 
       }
@@ -319,8 +324,9 @@ function LoginPage() {
                   type="button"
                   className="login-forgot-button"
                   onClick={() =>
-                    alert(
-                      "Password recovery will be added later."
+                    showToast(
+                      "Password recovery will be added later.",
+                      "info"
                     )
                   }
                 >
