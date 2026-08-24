@@ -4,10 +4,16 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { getCropLocation } from "../api/cropLocation";
 import { getWeather } from "../api/weather";
 import {
+  predictCrop,
+  getLatestRecommendation,
+  getModelInfo,
+} from "../api/cropRecommend";
+import {
   getWeatherInfo,
   formatDayLabel,
   formatFullDate,
 } from "../utils/weatherCodes";
+import { getCropIcon, formatCropName } from "../utils/cropIcons";
 
 import styles from "./CropRecommendationPage.module.css";
 
@@ -148,6 +154,159 @@ export default function CropRecommendationPage() {
     loadWeather();
 
   }, [province, district, retryCount]);
+
+
+  // =========================================================
+  // CROP RECOMMENDATION (ML)
+  // =========================================================
+
+  const [recommendation, setRecommendation] = useState(null);
+  const [recLoading, setRecLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [modelInfo, setModelInfo] = useState(null);
+
+  const [nitrogen, setNitrogen] = useState("");
+  const [phosphorus, setPhosphorus] = useState("");
+  const [potassium, setPotassium] = useState("");
+  const [ph, setPh] = useState("");
+
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+
+  // Load any previously saved recommendation, and the model's
+  // reported accuracy, once on mount
+  useEffect(() => {
+
+    let cancelled = false;
+
+    async function init() {
+
+      try {
+
+        const data = await getLatestRecommendation();
+
+        if (cancelled) {
+          return;
+        }
+
+        if (data?.recommendation) {
+
+          setRecommendation(data.recommendation);
+
+          const inputs = data.recommendation.inputs;
+
+          setNitrogen(String(inputs.nitrogen));
+          setPhosphorus(String(inputs.phosphorus));
+          setPotassium(String(inputs.potassium));
+          setPh(String(inputs.ph));
+
+        } else {
+
+          setShowForm(true);
+        }
+
+      } catch {
+
+        if (!cancelled) {
+          setShowForm(true);
+        }
+
+      } finally {
+
+        if (!cancelled) {
+          setRecLoading(false);
+        }
+      }
+    }
+
+    init();
+
+    getModelInfo()
+      .then((data) => {
+        if (!cancelled && data.success) {
+          setModelInfo(data);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+
+  }, []);
+
+
+  async function handlePredict(event) {
+
+    event.preventDefault();
+
+    const n = parseFloat(nitrogen);
+    const p = parseFloat(phosphorus);
+    const k = parseFloat(potassium);
+    const phValue = parseFloat(ph);
+
+    if ([n, p, k, phValue].some((value) => Number.isNaN(value))) {
+      setSubmitError("Please fill in all four fields with numbers.");
+      return;
+    }
+
+    if (!today) {
+      setSubmitError(
+        "Still loading this week's weather — try again in a moment."
+      );
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    // temperature/humidity come from today's forecast. Rainfall
+    // is approximated as the sum of the 7-day forecast, since the
+    // model was trained on seasonal rainfall totals, not a single
+    // day's figure — the closest proxy this weather API can give.
+    const temperature = (today.temp_max + today.temp_min) / 2;
+    const humidity = today.humidity;
+    const rainfall = (weather?.days || []).reduce(
+      (sum, day) => sum + (day.precipitation_sum || 0),
+      0
+    );
+
+    try {
+
+      const data = await predictCrop({
+        N: n,
+        P: p,
+        K: k,
+        ph: phValue,
+        temperature,
+        humidity,
+        rainfall,
+        province,
+        district,
+      });
+
+      if (data.success) {
+        setRecommendation(data.recommendation);
+        setShowForm(false);
+      } else {
+        setSubmitError(
+          data.message || "Couldn't generate a recommendation."
+        );
+      }
+
+    } catch (error) {
+
+      setSubmitError(
+        error?.response?.data?.message ||
+        "Couldn't generate a recommendation. Please try again."
+      );
+
+    } finally {
+
+      setSubmitting(false);
+    }
+  }
 
 
   if (resolving || !province || !district) {
@@ -393,21 +552,205 @@ export default function CropRecommendationPage() {
 
 
         {/* =====================================================
-            RECOMMENDATION PLACEHOLDER
-            (crop recommendation logic goes here next)
+            CROP RECOMMENDATION (ML)
         ===================================================== */}
 
         <div className={styles.resultCard}>
 
           <h2 className={styles.resultTitle}>
-            Recommended crops
+            Recommended crop
           </h2>
 
-          <p className={styles.resultText}>
-            Once your crop recommendation model is connected,
-            personalized suggestions for {district} — based on
-            this week's weather — will appear here.
-          </p>
+
+          {recLoading && (
+            <p className={styles.resultText}>
+              Checking for a saved recommendation…
+            </p>
+          )}
+
+
+          {/* ---- RESULT VIEW ---- */}
+
+          {!recLoading && recommendation && !showForm && (
+
+            <div className={styles.recResult}>
+
+              <div className={styles.recTop}>
+
+                <span className={styles.recIcon}>
+                  {getCropIcon(recommendation.crop)}
+                </span>
+
+                <div>
+                  <span className={styles.recCropName}>
+                    {formatCropName(recommendation.crop)}
+                  </span>
+                  <span className={styles.recConfidence}>
+                    {Math.round(recommendation.confidence * 100)}% match
+                  </span>
+                </div>
+
+              </div>
+
+              {recommendation.top_predictions?.length > 1 && (
+
+                <div className={styles.recAlternatives}>
+
+                  <span className={styles.recAltLabel}>
+                    Other good options
+                  </span>
+
+                  <div className={styles.recAltList}>
+
+                    {recommendation.top_predictions
+                      .slice(1)
+                      .map((item) => (
+                        <span
+                          key={item.crop}
+                          className={styles.recAltChip}
+                        >
+                          {getCropIcon(item.crop)} {formatCropName(item.crop)}
+                          {" · "}
+                          {Math.round(item.confidence * 100)}%
+                        </span>
+                      ))}
+
+                  </div>
+
+                </div>
+              )}
+
+              <button
+                type="button"
+                className={styles.recalcBtn}
+                onClick={() => setShowForm(true)}
+              >
+                Recalculate with new soil values
+              </button>
+
+            </div>
+          )}
+
+
+          {/* ---- SOIL INPUT FORM ---- */}
+
+          {!recLoading && showForm && (
+
+            <form
+              className={styles.soilForm}
+              onSubmit={handlePredict}
+            >
+
+              <p className={styles.resultText}>
+                Enter your soil test results — we'll combine
+                them with this week's weather to recommend
+                a crop.
+              </p>
+
+              <div className={styles.soilGrid}>
+
+                <div className={styles.soilField}>
+                  <label htmlFor="nitrogen">
+                    Nitrogen (N)
+                  </label>
+                  <input
+                    id="nitrogen"
+                    type="number"
+                    min="0"
+                    max="140"
+                    step="0.1"
+                    value={nitrogen}
+                    onChange={(e) => setNitrogen(e.target.value)}
+                    placeholder="e.g. 90"
+                    required
+                  />
+                </div>
+
+                <div className={styles.soilField}>
+                  <label htmlFor="phosphorus">
+                    Phosphorus (P)
+                  </label>
+                  <input
+                    id="phosphorus"
+                    type="number"
+                    min="0"
+                    max="145"
+                    step="0.1"
+                    value={phosphorus}
+                    onChange={(e) => setPhosphorus(e.target.value)}
+                    placeholder="e.g. 42"
+                    required
+                  />
+                </div>
+
+                <div className={styles.soilField}>
+                  <label htmlFor="potassium">
+                    Potassium (K)
+                  </label>
+                  <input
+                    id="potassium"
+                    type="number"
+                    min="0"
+                    max="205"
+                    step="0.1"
+                    value={potassium}
+                    onChange={(e) => setPotassium(e.target.value)}
+                    placeholder="e.g. 43"
+                    required
+                  />
+                </div>
+
+                <div className={styles.soilField}>
+                  <label htmlFor="ph">
+                    Soil pH
+                  </label>
+                  <input
+                    id="ph"
+                    type="number"
+                    min="0"
+                    max="14"
+                    step="0.01"
+                    value={ph}
+                    onChange={(e) => setPh(e.target.value)}
+                    placeholder="e.g. 6.5"
+                    required
+                  />
+                </div>
+
+              </div>
+
+              {submitError && (
+                <p className={styles.formError}>
+                  {submitError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                className={styles.predictBtn}
+                disabled={submitting || !today}
+              >
+                {submitting ? "Analyzing…" : "Get recommendation"}
+              </button>
+
+              <p className={styles.recDisclaimer}>
+                Temperature and humidity come from today's
+                forecast above. Rainfall is estimated from the
+                7-day forecast total, since the model was
+                trained on seasonal rainfall figures rather
+                than a single day's reading — treat it as a
+                helpful estimate, not a precise agronomic
+                measurement.
+                {modelInfo && (
+                  <>
+                    {" "}Model accuracy on held-out test data:
+                    {" "}{Math.round(modelInfo.held_out_test_accuracy * 100)}%.
+                  </>
+                )}
+              </p>
+
+            </form>
+          )}
 
         </div>
 
