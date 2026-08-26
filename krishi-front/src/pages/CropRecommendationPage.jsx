@@ -13,9 +13,19 @@ import {
   formatDayLabel,
   formatFullDate,
 } from "../utils/weatherCodes";
-import { getCropIcon, formatCropName } from "../utils/cropIcons";
+import { formatCropName } from "../utils/cropIcons";
+import { getMatchReasons } from "../utils/cropReasons";
+import CROP_FACTS from "../data/cropFacts";
+import CropImage from "../components/CropImage";
 
 import styles from "./CropRecommendationPage.module.css";
+
+
+const SOIL_PRESETS = [
+  { label: "Loamy & Balanced", nitrogen: 60, phosphorus: 55, potassium: 50, ph: 6.5 },
+  { label: "Acidic & Low-N", nitrogen: 20, phosphorus: 40, potassium: 30, ph: 5.2 },
+  { label: "Rich & Alkaline", nitrogen: 100, phosphorus: 90, potassium: 90, ph: 7.8 },
+];
 
 export default function CropRecommendationPage() {
 
@@ -165,13 +175,30 @@ export default function CropRecommendationPage() {
   const [showForm, setShowForm] = useState(false);
   const [modelInfo, setModelInfo] = useState(null);
 
-  const [nitrogen, setNitrogen] = useState("");
-  const [phosphorus, setPhosphorus] = useState("");
-  const [potassium, setPotassium] = useState("");
-  const [ph, setPh] = useState("");
+  const [nitrogen, setNitrogen] = useState(60);
+  const [phosphorus, setPhosphorus] = useState(50);
+  const [potassium, setPotassium] = useState(50);
+  const [ph, setPh] = useState(6.5);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+
+
+  function applyPreset(preset) {
+    setNitrogen(preset.nitrogen);
+    setPhosphorus(preset.phosphorus);
+    setPotassium(preset.potassium);
+    setPh(preset.ph);
+  }
+
+
+  function resetSoilValues() {
+    setNitrogen(60);
+    setPhosphorus(50);
+    setPotassium(50);
+    setPh(6.5);
+    setSubmitError(null);
+  }
 
 
   // Load any previously saved recommendation, and the model's
@@ -196,10 +223,10 @@ export default function CropRecommendationPage() {
 
           const inputs = data.recommendation.inputs;
 
-          setNitrogen(String(inputs.nitrogen));
-          setPhosphorus(String(inputs.phosphorus));
-          setPotassium(String(inputs.potassium));
-          setPh(String(inputs.ph));
+          setNitrogen(inputs.nitrogen);
+          setPhosphorus(inputs.phosphorus);
+          setPotassium(inputs.potassium);
+          setPh(inputs.ph);
 
         } else {
 
@@ -241,16 +268,6 @@ export default function CropRecommendationPage() {
 
     event.preventDefault();
 
-    const n = parseFloat(nitrogen);
-    const p = parseFloat(phosphorus);
-    const k = parseFloat(potassium);
-    const phValue = parseFloat(ph);
-
-    if ([n, p, k, phValue].some((value) => Number.isNaN(value))) {
-      setSubmitError("Please fill in all four fields with numbers.");
-      return;
-    }
-
     if (!today) {
       setSubmitError(
         "Still loading this week's weather — try again in a moment."
@@ -275,10 +292,10 @@ export default function CropRecommendationPage() {
     try {
 
       const data = await predictCrop({
-        N: n,
-        P: p,
-        K: k,
-        ph: phValue,
+        N: nitrogen,
+        P: phosphorus,
+        K: potassium,
+        ph,
         temperature,
         humidity,
         rainfall,
@@ -552,170 +569,86 @@ export default function CropRecommendationPage() {
 
 
         {/* =====================================================
-            CROP RECOMMENDATION (ML)
+            SOIL INPUT FORM (sliders)
         ===================================================== */}
 
-        <div className={styles.resultCard}>
+        {!recLoading && showForm && (
 
-          <h2 className={styles.resultTitle}>
-            Recommended crop
-          </h2>
+          <div className={styles.soilCard}>
 
+            <div className={styles.soilCardHeader}>
 
-          {recLoading && (
-            <p className={styles.resultText}>
-              Checking for a saved recommendation…
-            </p>
-          )}
+              <p className={styles.soilCardHint}>
+                Drag each slider to match your soil test results.
+              </p>
 
-
-          {/* ---- RESULT VIEW ---- */}
-
-          {!recLoading && recommendation && !showForm && (
-
-            <div className={styles.recResult}>
-
-              <div className={styles.recTop}>
-
-                <span className={styles.recIcon}>
-                  {getCropIcon(recommendation.crop)}
-                </span>
-
-                <div>
-                  <span className={styles.recCropName}>
-                    {formatCropName(recommendation.crop)}
-                  </span>
-                  <span className={styles.recConfidence}>
-                    {Math.round(recommendation.confidence * 100)}% match
-                  </span>
-                </div>
-
+              <div className={styles.presetRow}>
+                {SOIL_PRESETS.map((preset) => (
+                  <button
+                    type="button"
+                    key={preset.label}
+                    className={styles.presetChip}
+                    onClick={() => applyPreset(preset)}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
               </div>
 
-              {recommendation.top_predictions?.length > 1 && (
-
-                <div className={styles.recAlternatives}>
-
-                  <span className={styles.recAltLabel}>
-                    Other good options
-                  </span>
-
-                  <div className={styles.recAltList}>
-
-                    {recommendation.top_predictions
-                      .slice(1)
-                      .map((item) => (
-                        <span
-                          key={item.crop}
-                          className={styles.recAltChip}
-                        >
-                          {getCropIcon(item.crop)} {formatCropName(item.crop)}
-                          {" · "}
-                          {Math.round(item.confidence * 100)}%
-                        </span>
-                      ))}
-
-                  </div>
-
-                </div>
-              )}
-
-              <button
-                type="button"
-                className={styles.recalcBtn}
-                onClick={() => setShowForm(true)}
-              >
-                Recalculate with new soil values
-              </button>
-
             </div>
-          )}
 
-
-          {/* ---- SOIL INPUT FORM ---- */}
-
-          {!recLoading && showForm && (
-
-            <form
-              className={styles.soilForm}
-              onSubmit={handlePredict}
-            >
-
-              <p className={styles.resultText}>
-                Enter your soil test results — we'll combine
-                them with this week's weather to recommend
-                a crop.
-              </p>
+            <form onSubmit={handlePredict}>
 
               <div className={styles.soilGrid}>
 
-                <div className={styles.soilField}>
-                  <label htmlFor="nitrogen">
-                    Nitrogen (N)
-                  </label>
-                  <input
-                    id="nitrogen"
-                    type="number"
-                    min="0"
-                    max="140"
-                    step="0.1"
-                    value={nitrogen}
-                    onChange={(e) => setNitrogen(e.target.value)}
-                    placeholder="e.g. 90"
-                    required
-                  />
-                </div>
+                <SoilSlider
+                  id="nitrogen"
+                  symbol="N"
+                  label="Nitrogen"
+                  unit="kg/ha"
+                  min={0}
+                  max={140}
+                  value={nitrogen}
+                  onChange={setNitrogen}
+                  tone="primary"
+                />
 
-                <div className={styles.soilField}>
-                  <label htmlFor="phosphorus">
-                    Phosphorus (P)
-                  </label>
-                  <input
-                    id="phosphorus"
-                    type="number"
-                    min="0"
-                    max="145"
-                    step="0.1"
-                    value={phosphorus}
-                    onChange={(e) => setPhosphorus(e.target.value)}
-                    placeholder="e.g. 42"
-                    required
-                  />
-                </div>
+                <SoilSlider
+                  id="phosphorus"
+                  symbol="P"
+                  label="Phosphorus"
+                  unit="kg/ha"
+                  min={0}
+                  max={145}
+                  value={phosphorus}
+                  onChange={setPhosphorus}
+                  tone="accent"
+                />
 
-                <div className={styles.soilField}>
-                  <label htmlFor="potassium">
-                    Potassium (K)
-                  </label>
-                  <input
-                    id="potassium"
-                    type="number"
-                    min="0"
-                    max="205"
-                    step="0.1"
-                    value={potassium}
-                    onChange={(e) => setPotassium(e.target.value)}
-                    placeholder="e.g. 43"
-                    required
-                  />
-                </div>
+                <SoilSlider
+                  id="potassium"
+                  symbol="K"
+                  label="Potassium"
+                  unit="kg/ha"
+                  min={0}
+                  max={205}
+                  value={potassium}
+                  onChange={setPotassium}
+                  tone="primary"
+                />
 
-                <div className={styles.soilField}>
-                  <label htmlFor="ph">
-                    Soil pH
-                  </label>
-                  <input
-                    id="ph"
-                    type="number"
-                    min="0"
-                    max="14"
-                    step="0.01"
-                    value={ph}
-                    onChange={(e) => setPh(e.target.value)}
-                    placeholder="e.g. 6.5"
-                    required
-                  />
-                </div>
+                <SoilSlider
+                  id="ph"
+                  symbol="pH"
+                  label="Soil pH"
+                  unit=""
+                  min={3.5}
+                  max={9.5}
+                  step={0.1}
+                  value={ph}
+                  onChange={setPh}
+                  tone="accent"
+                />
 
               </div>
 
@@ -725,13 +658,25 @@ export default function CropRecommendationPage() {
                 </p>
               )}
 
-              <button
-                type="submit"
-                className={styles.predictBtn}
-                disabled={submitting || !today}
-              >
-                {submitting ? "Analyzing…" : "Get recommendation"}
-              </button>
+              <div className={styles.soilActions}>
+
+                <button
+                  type="submit"
+                  className={styles.predictBtn}
+                  disabled={submitting || !today}
+                >
+                  {submitting ? "Analyzing…" : "🌿 Recommend Crops"}
+                </button>
+
+                <button
+                  type="button"
+                  className={styles.resetBtn}
+                  onClick={resetSoilValues}
+                >
+                  Reset
+                </button>
+
+              </div>
 
               <p className={styles.recDisclaimer}>
                 Temperature and humidity come from today's
@@ -750,10 +695,213 @@ export default function CropRecommendationPage() {
               </p>
 
             </form>
+
+          </div>
+        )}
+
+
+        {/* =====================================================
+            RESULTS — "Your recommended harvest"
+        ===================================================== */}
+
+        {recLoading && (
+          <p className={styles.checkingRecText}>
+            Checking for a saved recommendation…
+          </p>
+        )}
+
+        {!recLoading && recommendation && !showForm && (
+
+          <div className={styles.harvestSection}>
+
+            <div className={styles.harvestHeaderRow}>
+
+              <h2 className={styles.harvestHeading}>
+                🌿 Your recommended harvest
+              </h2>
+
+              <button
+                type="button"
+                className={styles.recalcBtn}
+                onClick={() => setShowForm(true)}
+              >
+                Recalculate with new soil values
+              </button>
+
+            </div>
+
+            <div className={styles.harvestGrid}>
+
+              {recommendation.top_predictions.map((item, index) => {
+
+                const facts = CROP_FACTS[item.crop];
+                const reasons = getMatchReasons(
+                  recommendation.inputs,
+                  facts
+                );
+                const matchPercent = Math.round(item.confidence * 100);
+                const isBest = index === 0;
+
+                return (
+                  <div
+                    key={item.crop}
+                    className={[
+                      styles.harvestCard,
+                      isBest ? styles.harvestCardBest : "",
+                    ].join(" ")}
+                  >
+
+                    {isBest && (
+                      <span className={styles.bestBadge}>
+                        Best match
+                      </span>
+                    )}
+
+                    <div className={styles.harvestCardTop}>
+
+                      <CropImage crop={item.crop} />
+
+                      <div>
+                        <span className={styles.harvestRank}>
+                          #{index + 1} · {facts?.category || "Crop"}
+                        </span>
+                        <span className={styles.harvestCropName}>
+                          {formatCropName(item.crop)}
+                        </span>
+                      </div>
+
+                    </div>
+
+                    <div className={styles.matchRow}>
+                      <span className={styles.matchLabel}>
+                        Match score
+                      </span>
+                      <span className={styles.matchValue}>
+                        {matchPercent}%
+                      </span>
+                    </div>
+
+                    <div className={styles.matchBarTrack}>
+                      <div
+                        className={styles.matchBarFill}
+                        style={{ width: `${matchPercent}%` }}
+                      />
+                    </div>
+
+                    {reasons.length > 0 && (
+                      <ul className={styles.reasonList}>
+                        {reasons.map((reason) => (
+                          <li key={reason}>
+                            🌱 {reason}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {facts && (
+                      <>
+                        <div className={styles.harvestDivider} />
+
+                        <div className={styles.miniChipsRow}>
+                          <span className={styles.miniChip}>
+                            ⏱ {facts.duration}
+                          </span>
+                          <span className={styles.miniChip}>
+                            📦 {facts.yieldNote}
+                          </span>
+                          <span className={styles.miniChip}>
+                            pH {facts.phRange[0]}–{facts.phRange[1]}
+                          </span>
+                        </div>
+
+                        <p className={styles.harvestTip}>
+                          {facts.tip}
+                        </p>
+                      </>
+                    )}
+
+                  </div>
+                );
+              })}
+
+            </div>
+
+            <p className={styles.harvestDisclaimer}>
+              Growing duration and yield figures are general
+              reference ranges — actual results vary by variety,
+              climate, and farming practice.
+            </p>
+
+          </div>
+        )}
+
+      </div>
+
+    </div>
+  );
+}
+
+
+// =========================================================
+// A single labeled range slider used in the soil input form
+// =========================================================
+
+function SoilSlider({
+  id,
+  symbol,
+  label,
+  unit,
+  min,
+  max,
+  step = 1,
+  value,
+  onChange,
+  tone,
+}) {
+
+  return (
+    <div
+      className={[
+        styles.soilField,
+        tone === "accent" ? styles.soilFieldAccent : styles.soilFieldPrimary,
+      ].join(" ")}
+    >
+
+      <div className={styles.soilFieldTop}>
+
+        <span className={styles.soilFieldIcon}>
+          {symbol}
+        </span>
+
+        <label htmlFor={id}>
+          {label}
+        </label>
+
+        <span className={styles.soilFieldValue}>
+          {value}
+          {unit && (
+            <span className={styles.soilFieldUnit}>
+              {" "}{unit}
+            </span>
           )}
+        </span>
 
-        </div>
+      </div>
 
+      <input
+        id={id}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(event) => onChange(parseFloat(event.target.value))}
+        className={styles.slider}
+      />
+
+      <div className={styles.sliderMinMax}>
+        <span>{min}</span>
+        <span>{max}</span>
       </div>
 
     </div>

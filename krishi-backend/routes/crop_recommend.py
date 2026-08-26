@@ -106,6 +106,7 @@ def recommend_crop():
         top_crop, top_confidence, top_predictions = predict_crop(
             nitrogen, phosphorus, potassium,
             temperature, humidity, ph, rainfall,
+            top_k=6,
         )
 
 

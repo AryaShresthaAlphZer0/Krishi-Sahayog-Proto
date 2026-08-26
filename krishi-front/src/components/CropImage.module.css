@@ -1,0 +1,32 @@
+.image {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 14px;
+
+  object-fit: cover;
+
+  flex-shrink: 0;
+}
+
+
+.placeholder {
+  width: 60px;
+  height: 60px;
+
+  border-radius: 14px;
+
+  background: #eaf3e8;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+
+.placeholderIcon {
+  font-size: 1.7rem;
+}
