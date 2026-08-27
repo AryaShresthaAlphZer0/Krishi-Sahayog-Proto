@@ -16,7 +16,7 @@
 
   border-radius: 14px;
 
-  background: #eaf3e8;
+  background: var(--chip-bg);
 
   display: flex;
 

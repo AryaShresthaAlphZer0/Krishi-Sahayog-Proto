@@ -122,7 +122,7 @@
 ========================================================= */
 
 .card {
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px solid var(--border);
 
@@ -164,7 +164,7 @@
 
   outline: none;
 
-  background: #fcfdfb;
+  background: var(--chip-bg);
 
   color: var(--text-dark);
 
@@ -193,14 +193,14 @@
 .formGroup select:focus {
   border-color: var(--primary-light);
 
-  background-color: white;
+  background-color: var(--surface);
 
   box-shadow: 0 0 0 4px rgba(102, 187, 106, 0.12);
 }
 
 
 .formGroup select:disabled {
-  background-color: #f2f2ee;
+  background-color: var(--chip-bg);
 
   cursor: not-allowed;
 
@@ -256,7 +256,7 @@
 
 
 .submitBtn:disabled {
-  background: #b9c9b8;
+  background: var(--disabled-bg);
 
   box-shadow: none;
 
@@ -330,7 +330,7 @@
 ========================================================= */
 
 .authCard {
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px solid var(--border);
 

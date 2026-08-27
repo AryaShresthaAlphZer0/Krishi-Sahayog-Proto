@@ -317,6 +317,37 @@ export default function Navbar() {
             </Link>
           </li>
 
+
+          {/* =========================================
+              SETTINGS
+          ========================================= */}
+
+          <li>
+            <Link
+              to="/settings"
+              className={[
+                styles.link,
+                location.pathname === "/settings"
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="Settings"
+              onClick={() =>
+                setMobileOpen(false)
+              }
+            >
+              <span className={styles.linkIcon}>
+                ⚙️
+              </span>
+
+              <span className={styles.linkLabel}>
+                Settings
+              </span>
+            </Link>
+          </li>
+
         </ul>
 
 

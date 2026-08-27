@@ -1,0 +1,303 @@
+/* =========================================================
+   KRISHI SAHAYOG
+   SETTINGS PAGE
+========================================= */
+
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+
+  margin-left: var(--sidebar-w);
+
+  background: var(--background);
+
+  padding: 4rem 6vw 6rem;
+
+  transition: margin-left 0.25s ease;
+}
+
+
+.wrapper {
+  width: 100%;
+  max-width: 640px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  margin-bottom: 2rem;
+}
+
+
+.eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  color: var(--primary);
+
+  font-family: "Courier New", Courier, monospace;
+
+  font-size: 0.82rem;
+
+  font-weight: 500;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 1.2rem;
+}
+
+
+.eyebrow::before {
+  content: "";
+
+  width: 32px;
+  height: 2px;
+
+  background: var(--accent);
+}
+
+
+.title {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(2rem, 3.6vw, 2.6rem);
+
+  font-weight: 600;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.03em;
+
+  color: var(--text-dark);
+}
+
+
+.subtitle {
+  margin: 0.9rem 0 0;
+
+  color: var(--text-muted);
+
+  font-size: 1rem;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card {
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  padding: 2rem;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+
+.sectionTitle {
+  margin: 0 0 1.1rem;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 1.1rem;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+}
+
+
+/* =========================================================
+   THEME OPTIONS
+========================================================= */
+
+.themeGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 1rem;
+}
+
+
+.themeOption {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.8rem;
+
+  padding: 1.2rem;
+
+  border: 2px solid var(--border);
+  border-radius: 16px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+
+.themeOption:hover {
+  border-color: var(--primary-light);
+
+  transform: translateY(-2px);
+}
+
+
+.themeOptionActive {
+  border-color: var(--primary);
+}
+
+
+.checkMark {
+  position: absolute;
+
+  top: 0.6rem;
+  right: 0.6rem;
+
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+
+  background: var(--primary);
+
+  color: var(--white);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.themeLabel {
+  font-size: 0.92rem;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+}
+
+
+/* ---- preview swatches ---- */
+
+.previewLight,
+.previewDark {
+  width: 100%;
+  height: 74px;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--border);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  gap: 0.35rem;
+
+  padding: 0 0.9rem;
+}
+
+
+.previewLight {
+  background: #faf7f0;
+}
+
+
+.previewDark {
+  background: #121a14;
+}
+
+
+.previewDot {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+}
+
+
+.previewLine {
+  width: 60%;
+  height: 6px;
+
+  border-radius: 3px;
+}
+
+
+.previewDark .previewLine,
+.previewDark .previewLineShort {
+  background: #f1f5f2;
+}
+
+
+.previewLight .previewLine,
+.previewLight .previewLineShort {
+  background: #2b2b2b;
+}
+
+
+.previewLineShort {
+  width: 35%;
+  height: 6px;
+
+  border-radius: 3px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .page {
+    margin-left: 0;
+
+    padding: 5.5rem 1.5rem 3rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+}

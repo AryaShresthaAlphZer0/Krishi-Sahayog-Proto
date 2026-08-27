@@ -237,7 +237,7 @@
 
   max-width: 470px;
 
-  background: var(--white);
+  background: var(--surface);
 
   border:
     1px solid
@@ -277,7 +277,7 @@
 
   border-radius: 20px;
 
-  background: #edf7ed;
+  background: var(--chip-bg);
 
   color: var(--primary);
 
@@ -400,7 +400,7 @@
 
   outline: none;
 
-  background: #fcfdfb;
+  background: var(--chip-bg);
 
   color: var(--text-dark);
 
@@ -417,7 +417,7 @@
   border-color:
     var(--primary-light);
 
-  background: white;
+  background: var(--surface);
 
   box-shadow:
     0 0 0 4px
@@ -697,9 +697,4 @@
   .login-header p {
     font-size: 13px;
   }
-}
-.login-input-icon img {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
 }

@@ -11,7 +11,7 @@
   width: var(--sidebar-w, 250px);
   height: 100vh;
 
-  background-color: var(--white);
+  background-color: var(--surface);
 
   border-right: 1px solid var(--border);
 

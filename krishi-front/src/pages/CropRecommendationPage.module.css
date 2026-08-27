@@ -360,7 +360,7 @@
 
   border-radius: 16px;
 
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px solid var(--border);
 
@@ -442,7 +442,7 @@
 
   overflow: hidden;
 
-  background: #e7efe6;
+  background: var(--chip-bg);
 
   margin-bottom: 1.5rem;
 }
@@ -464,7 +464,7 @@
 
   overflow: hidden;
 
-  background: #e7efe6;
+  background: var(--chip-bg);
 }
 
 
@@ -503,7 +503,7 @@
 ========================================================= */
 
 .weatherErrorCard {
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px dashed var(--border);
 
@@ -595,7 +595,7 @@
 ========================================================= */
 
 .soilCard {
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px solid var(--border);
 
@@ -646,7 +646,7 @@
   border: 1px solid var(--border);
   border-radius: 999px;
 
-  background: #f6f9f4;
+  background: var(--chip-bg);
 
   color: var(--text-dark);
 
@@ -663,7 +663,7 @@
 
 
 .presetChip:hover {
-  background: #eaf3e8;
+  background: var(--chip-bg-hover);
 
   border-color: var(--primary-light);
 }
@@ -689,7 +689,7 @@
 
   border: 1px solid var(--border);
 
-  background: #fbfdfa;
+  background: var(--chip-bg);
 }
 
 
@@ -804,7 +804,7 @@
 
   border-radius: 50%;
 
-  background: var(--white);
+  background: var(--surface);
 
   border: 3px solid var(--primary);
 
@@ -825,7 +825,7 @@
 
   border-radius: 50%;
 
-  background: var(--white);
+  background: var(--surface);
 
   border: 3px solid var(--primary);
 
@@ -890,7 +890,7 @@
 
 
 .predictBtn:disabled {
-  background: #b9c9b8;
+  background: var(--disabled-bg);
 
   cursor: not-allowed;
 }
@@ -900,7 +900,7 @@
   border: 1px solid var(--border);
   border-radius: 10px;
 
-  background: var(--white);
+  background: var(--surface);
 
   color: var(--text-dark);
 
@@ -917,7 +917,7 @@
 
 
 .resetBtn:hover {
-  background: #f2f6f0;
+  background: var(--chip-bg);
 }
 
 
@@ -1013,7 +1013,7 @@
 .harvestCard {
   position: relative;
 
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px solid var(--border);
 
@@ -1032,7 +1032,7 @@
 
 
 .harvestCardBest {
-  background: #fbf6ee;
+  background: var(--surface-tint);
 
   border-color: var(--accent);
 }
@@ -1126,7 +1126,7 @@
 
   border-radius: 999px;
 
-  background: #eef2ec;
+  background: var(--track-bg);
 
   overflow: hidden;
 
@@ -1187,7 +1187,7 @@
 
   border-radius: 999px;
 
-  background: #f2f6f0;
+  background: var(--chip-bg);
 
   font-size: 0.72rem;
 
