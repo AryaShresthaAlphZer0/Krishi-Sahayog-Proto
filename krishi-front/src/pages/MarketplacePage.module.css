@@ -1,0 +1,395 @@
+/* =========================================================
+   KRISHI SAHAYOG
+   MARKETPLACE — glassmorphism
+========================================================= */
+
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+
+  margin-left: var(--sidebar-w);
+
+  background: var(--glass-backdrop);
+
+  padding: 4rem 6vw 6rem;
+
+  transition: margin-left 0.25s ease;
+}
+
+
+.wrapper {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  text-align: center;
+
+  margin-bottom: 2.5rem;
+}
+
+
+.eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  color: var(--primary);
+
+  font-family: "Courier New", Courier, monospace;
+
+  font-size: 0.82rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.14em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 1rem;
+}
+
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+
+  width: 28px;
+  height: 2px;
+
+  background: var(--accent);
+}
+
+
+.title {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: clamp(2.2rem, 4vw, 3rem);
+
+  font-weight: 600;
+
+  letter-spacing: -0.03em;
+
+  color: var(--text-dark);
+}
+
+
+.subtitle {
+  max-width: 480px;
+
+  margin: 0.9rem auto 0;
+
+  color: var(--text-muted);
+
+  font-size: 1rem;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  margin-bottom: 2rem;
+
+  padding: 1rem;
+
+  border-radius: 20px;
+
+  background: var(--glass-bg);
+
+  border: 1px solid var(--glass-border);
+
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+
+  box-shadow: 0 12px 30px var(--glass-shadow);
+}
+
+
+.tabRow {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.5rem;
+}
+
+
+.tab {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.4rem;
+
+  padding: 0.5rem 0.95rem;
+
+  border-radius: 999px;
+
+  border: 1px solid transparent;
+
+  background: transparent;
+
+  color: var(--text-dark);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+
+.tab:hover {
+  background: var(--glass-bg-strong);
+}
+
+
+.tabActive {
+  background: var(--primary);
+
+  color: var(--white);
+}
+
+
+.tabActive:hover {
+  background: var(--primary);
+}
+
+
+.rightControls {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+}
+
+
+.search {
+  padding: 0.55rem 1rem;
+
+  border-radius: 999px;
+
+  border: 1px solid var(--glass-border);
+
+  background: var(--glass-bg-strong);
+
+  color: var(--text-dark);
+
+  font-size: 0.85rem;
+  font-family: inherit;
+
+  outline: none;
+
+  width: 200px;
+}
+
+
+.search:focus {
+  border-color: var(--primary-light);
+}
+
+
+.sellBtn {
+  padding: 0.55rem 1rem;
+
+  border-radius: 999px;
+
+  border: 1px solid var(--accent);
+
+  background: var(--accent);
+
+  color: var(--white);
+
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition: transform 0.15s ease;
+}
+
+
+.sellBtn:hover {
+  transform: translateY(-1px);
+}
+
+
+.cartBtn {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--glass-border);
+
+  background: var(--glass-bg-strong);
+
+  font-size: 1.1rem;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.cartBadge {
+  position: absolute;
+
+  top: -4px;
+  right: -4px;
+
+  min-width: 18px;
+  height: 18px;
+
+  padding: 0 4px;
+
+  border-radius: 999px;
+
+  background: var(--danger);
+
+  color: var(--white);
+
+  font-size: 0.65rem;
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 1.2rem;
+}
+
+
+.emptyState {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  padding: 3rem 0;
+
+  color: var(--text-muted);
+}
+
+
+.emptyIcon {
+  font-size: 2.2rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+
+@media (max-width: 900px) {
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .controls {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .rightControls {
+    justify-content: space-between;
+  }
+
+  .search {
+    flex: 1;
+
+    width: auto;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .page {
+    margin-left: 0;
+
+    padding: 5.5rem 1.2rem 3rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rightControls {
+    flex-wrap: wrap;
+  }
+
+}
+
+
+@media (max-width: 420px) {
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+}

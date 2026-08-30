@@ -23,13 +23,91 @@
 
   --border: #dce8d8;
 
+  /* Literal white — used for text/icons sitting on colored
+     (green/orange) buttons and badges. Intentionally the SAME
+     in light and dark mode, since it's never a page surface. */
   --white: #ffffff;
+
+  /* Card/panel surface — THIS is the one that flips in dark
+     mode. Anything that should look like "the page's cards"
+     should use --surface, not --white. */
+  --surface: #ffffff;
+
+  /* Soft accent-tinted surface, e.g. a "best match" highlight */
+  --surface-tint: #fbf6ee;
+
+  /* Subtle pill/chip backgrounds (presets, mini chips, inputs) */
+  --chip-bg: #f2f6f0;
+  --chip-bg-hover: #eaf3e8;
+
+  /* Progress bar tracks, skeleton loaders */
+  --track-bg: #eef2ec;
+
+  /* Disabled buttons/inputs */
+  --disabled-bg: #b9c9b8;
+
+  /* ===============================
+     GLASSMORPHISM (marketplace)
+  =============================== */
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: rgba(31, 72, 45, 0.18);
+  --glass-blur: 18px;
+
+  /* Backdrop gradient behind the glass panels */
+  --glass-backdrop:
+    radial-gradient(circle at 15% 20%, rgba(102, 187, 106, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(214, 140, 69, 0.3), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(46, 125, 50, 0.28), transparent 50%),
+    linear-gradient(160deg, #eaf3ea 0%, #f7f2e7 100%);
 
   /* ===============================
      LAYOUT
   =============================== */
 
   --sidebar-w: 250px;
+}
+
+
+/* =========================================
+   DARK MODE
+   Toggled via the Settings page — see
+   context/ThemeContext.jsx, which sets
+   data-theme="dark" on <html>.
+========================================= */
+
+:root[data-theme="dark"] {
+  --background: #121a14;
+
+  --text-dark: #f1f5f2;
+  --text-muted: #9bafa2;
+
+  --border: #2a352c;
+
+  /* --white deliberately NOT overridden — see note above */
+
+  --surface: #1c241e;
+  --surface-tint: #2a2118;
+
+  --chip-bg: #1b2420;
+  --chip-bg-hover: #243027;
+
+  --track-bg: #26302a;
+
+  --disabled-bg: #3a4a3f;
+
+  --glass-bg: rgba(28, 36, 30, 0.55);
+  --glass-bg-strong: rgba(28, 36, 30, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
+
+  --glass-backdrop:
+    radial-gradient(circle at 15% 20%, rgba(102, 187, 106, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(214, 140, 69, 0.16), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(46, 125, 50, 0.16), transparent 50%),
+    linear-gradient(160deg, #0e140f 0%, #141c15 100%);
 }
 
 
@@ -83,6 +161,10 @@ body {
     sans-serif;
 
   -webkit-font-smoothing: antialiased;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 

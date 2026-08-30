@@ -14,6 +14,7 @@ from database import models  # noqa: F401
 
 from routes.auth import auth_bp
 from routes.crop_location import crop_location_bp
+from routes.crop_recommend import crop_recommend_bp
 from routes.weather import weather_bp
 
 
@@ -167,6 +168,7 @@ def handle_unexpected_error(error):
 
 app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(crop_location_bp, url_prefix="/api/crop-location")
+app.register_blueprint(crop_recommend_bp, url_prefix="/api/crop-recommend")
 app.register_blueprint(weather_bp, url_prefix="/api/weather")
 
 

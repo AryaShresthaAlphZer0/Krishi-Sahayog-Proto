@@ -11,7 +11,7 @@
   width: var(--sidebar-w, 250px);
   height: 100vh;
 
-  background-color: var(--white);
+  background-color: var(--surface);
 
   border-right: 1px solid var(--border);
 
@@ -185,18 +185,30 @@
   border-left:
     3px solid transparent;
 
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+
   border-radius:
     0 10px 10px 0;
+
+  background: transparent;
 
   color: var(--text-dark);
 
   text-decoration: none;
+
+  font-family: inherit;
 
   font-size: 0.95rem;
 
   font-weight: 500;
 
   white-space: nowrap;
+
+  cursor: pointer;
+
+  text-align: left;
 
   transition:
     background-color 0.18s ease,
@@ -227,6 +239,8 @@
 }
 
 .linkIcon {
+  position: relative;
+
   width: 1.25rem;
 
   min-width: 1.25rem;
@@ -234,6 +248,36 @@
   text-align: center;
 
   flex-shrink: 0;
+}
+
+
+.cartCount {
+  position: absolute;
+
+  top: -6px;
+  right: -10px;
+
+  min-width: 16px;
+  height: 16px;
+
+  padding: 0 3px;
+
+  border-radius: 999px;
+
+  background: var(--danger);
+
+  color: var(--white);
+
+  font-size: 0.6rem;
+
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  line-height: 1;
 }
 
 

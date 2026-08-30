@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import Profile from "./Profile";
+import { useCart } from "../context/useCart";
 
 export default function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [featuresOpen, setFeaturesOpen] = useState(false);
+
+  const { totalItems, openCart } = useCart();
 
   const location = useLocation();
 
@@ -167,6 +170,64 @@ export default function Navbar() {
 
 
           {/* =========================================
+              BAZAAR (marketplace)
+          ========================================= */}
+
+          <li>
+            <Link
+              to="/marketplace"
+              className={[
+                styles.link,
+                location.pathname === "/marketplace"
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="Bazaar"
+              onClick={() =>
+                setMobileOpen(false)
+              }
+            >
+              <span className={styles.linkIcon}>
+                🛍️
+              </span>
+
+              <span className={styles.linkLabel}>
+                Bazaar
+              </span>
+            </Link>
+          </li>
+
+
+          {/* =========================================
+              CART
+          ========================================= */}
+
+          <li>
+            <button
+              type="button"
+              className={styles.link}
+              title="Cart"
+              onClick={openCart}
+            >
+              <span className={styles.linkIcon}>
+                🛒
+                {totalItems > 0 && (
+                  <span className={styles.cartCount}>
+                    {totalItems}
+                  </span>
+                )}
+              </span>
+
+              <span className={styles.linkLabel}>
+                Cart
+              </span>
+            </button>
+          </li>
+
+
+          {/* =========================================
               FEATURES
           ========================================= */}
 
@@ -313,6 +374,37 @@ export default function Navbar() {
 
               <span className={styles.linkLabel}>
                 About
+              </span>
+            </Link>
+          </li>
+
+
+          {/* =========================================
+              SETTINGS
+          ========================================= */}
+
+          <li>
+            <Link
+              to="/settings"
+              className={[
+                styles.link,
+                location.pathname === "/settings"
+                  ? styles.active
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              title="Settings"
+              onClick={() =>
+                setMobileOpen(false)
+              }
+            >
+              <span className={styles.linkIcon}>
+                ⚙️
+              </span>
+
+              <span className={styles.linkLabel}>
+                Settings
               </span>
             </Link>
           </li>

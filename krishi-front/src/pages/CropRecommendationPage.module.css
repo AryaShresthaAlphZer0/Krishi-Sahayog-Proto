@@ -20,7 +20,7 @@
 
 .wrapper {
   width: 100%;
-  max-width: 860px;
+  max-width: 1000px;
 
   margin: 0 auto;
 }
@@ -360,7 +360,7 @@
 
   border-radius: 16px;
 
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px solid var(--border);
 
@@ -442,7 +442,7 @@
 
   overflow: hidden;
 
-  background: #e7efe6;
+  background: var(--chip-bg);
 
   margin-bottom: 1.5rem;
 }
@@ -464,7 +464,7 @@
 
   overflow: hidden;
 
-  background: #e7efe6;
+  background: var(--chip-bg);
 }
 
 
@@ -503,7 +503,7 @@
 ========================================================= */
 
 .weatherErrorCard {
-  background: var(--white);
+  background: var(--surface);
 
   border: 1px dashed var(--border);
 
@@ -573,42 +573,649 @@
 }
 
 
-/* =========================================================
-   RESULT CARD
-========================================================= */
+.formError {
+  margin: 0;
 
-.resultCard {
-  background: var(--white);
+  padding: 0.6rem 1rem;
 
-  border: 1px solid var(--border);
+  border-radius: 10px;
 
-  border-radius: 18px;
+  background: rgba(200, 60, 60, 0.1);
 
-  padding: 2rem;
+  color: #a33;
 
-  box-shadow: 0 12px 30px rgba(46, 125, 50, 0.06);
+  font-size: 0.85rem;
+
+  line-height: 1.5;
 }
 
 
-.resultTitle {
-  margin: 0 0 0.6rem;
+/* =========================================================
+   SOIL INPUT CARD
+========================================================= */
 
-  font-family: Georgia, "Times New Roman", serif;
+.soilCard {
+  background: var(--surface);
 
-  font-size: 1.3rem;
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  padding: 2rem;
+
+  box-shadow: 0 16px 36px rgba(46, 125, 50, 0.07);
+
+  margin-bottom: 1.75rem;
+}
+
+
+.soilCardHeader {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 0.9rem;
+
+  margin-bottom: 1.5rem;
+}
+
+
+.soilCardHint {
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.92rem;
+}
+
+
+.presetRow {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.5rem;
+}
+
+
+.presetChip {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--chip-bg);
+
+  color: var(--text-dark);
+
+  padding: 0.4rem 0.9rem;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+
+.presetChip:hover {
+  background: var(--chip-bg-hover);
+
+  border-color: var(--primary-light);
+}
+
+
+/* ---- individual sliders ---- */
+
+.soilGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 1rem;
+
+  margin-bottom: 1.1rem;
+}
+
+
+.soilField {
+  padding: 1.1rem 1.2rem 1.3rem;
+
+  border-radius: 16px;
+
+  border: 1px solid var(--border);
+
+  background: var(--chip-bg);
+}
+
+
+.soilFieldPrimary .soilFieldIcon {
+  background: var(--primary);
+}
+
+
+.soilFieldAccent .soilFieldIcon {
+  background: var(--accent);
+}
+
+
+.soilFieldTop {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  margin-bottom: 0.9rem;
+}
+
+
+.soilFieldIcon {
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--white);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+
+.soilFieldTop label {
+  flex: 1;
+
+  font-size: 0.92rem;
+
+  font-weight: 600;
 
   color: var(--text-dark);
 }
 
 
-.resultText {
+.soilFieldValue {
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 1.3rem;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+}
+
+
+.soilFieldUnit {
+  font-family: inherit;
+
+  font-size: 0.7rem;
+
+  font-weight: 500;
+
+  color: var(--text-muted);
+}
+
+
+.slider {
+  width: 100%;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  height: 6px;
+
+  border-radius: 999px;
+
+  background: var(--border);
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+
+.soilFieldPrimary .slider {
+  accent-color: var(--primary);
+}
+
+
+.soilFieldAccent .slider {
+  accent-color: var(--accent);
+}
+
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+
+  background: var(--surface);
+
+  border: 3px solid var(--primary);
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  cursor: pointer;
+}
+
+
+.soilFieldAccent .slider::-webkit-slider-thumb {
+  border-color: var(--accent);
+}
+
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+
+  background: var(--surface);
+
+  border: 3px solid var(--primary);
+
+  cursor: pointer;
+}
+
+
+.soilFieldAccent .slider::-moz-range-thumb {
+  border-color: var(--accent);
+}
+
+
+.sliderMinMax {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 0.4rem;
+
+  font-size: 0.72rem;
+
+  color: var(--text-muted);
+}
+
+
+.soilActions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  margin-bottom: 0.9rem;
+}
+
+
+.predictBtn {
+  border: none;
+  border-radius: 10px;
+
+  background: var(--primary);
+
+  color: var(--white);
+
+  padding: 0.7rem 1.4rem;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+
+.predictBtn:hover:not(:disabled) {
+  background: var(--primary-light);
+
+  transform: translateY(-1px);
+}
+
+
+.predictBtn:disabled {
+  background: var(--disabled-bg);
+
+  cursor: not-allowed;
+}
+
+
+.resetBtn {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--surface);
+
+  color: var(--text-dark);
+
+  padding: 0.7rem 1.2rem;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease;
+}
+
+
+.resetBtn:hover {
+  background: var(--chip-bg);
+}
+
+
+.recDisclaimer {
   margin: 0;
+
+  font-size: 0.76rem;
 
   color: var(--text-muted);
 
+  line-height: 1.55;
+}
+
+
+.checkingRecText {
+  color: var(--text-muted);
+
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   HARVEST RESULTS GRID
+========================================================= */
+
+.harvestSection {
+  margin-top: 0.5rem;
+}
+
+
+.harvestHeaderRow {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 0.8rem;
+
+  margin-bottom: 1.1rem;
+}
+
+
+.harvestHeading {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 1.3rem;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+}
+
+
+.recalcBtn {
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: var(--primary);
+
+  padding: 0.5rem 1rem;
+
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+
+.recalcBtn:hover {
+  background: rgba(46, 125, 50, 0.08);
+}
+
+
+.harvestGrid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1rem;
+}
+
+
+.harvestCard {
+  position: relative;
+
+  background: var(--surface);
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  padding: 1.4rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.9rem;
+
+  box-shadow: 0 10px 24px rgba(46, 125, 50, 0.05);
+}
+
+
+.harvestCardBest {
+  background: var(--surface-tint);
+
+  border-color: var(--accent);
+}
+
+
+.bestBadge {
+  position: absolute;
+
+  top: 1rem;
+  right: 1rem;
+
+  background: var(--accent);
+
+  color: var(--white);
+
+  font-size: 0.65rem;
+  font-weight: 700;
+
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  padding: 0.3rem 0.6rem;
+
+  border-radius: 999px;
+}
+
+
+.harvestCardTop {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.8rem;
+}
+
+
+.harvestRank {
+  display: block;
+
+  font-size: 0.68rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  color: var(--text-muted);
+}
+
+
+.harvestCropName {
+  display: block;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 1.2rem;
+
+  font-weight: 600;
+
+  color: var(--text-dark);
+}
+
+
+.matchRow {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: baseline;
+}
+
+
+.matchLabel {
+  font-size: 0.78rem;
+
+  color: var(--text-muted);
+}
+
+
+.matchValue {
   font-size: 0.95rem;
 
-  line-height: 1.65;
+  font-weight: 700;
+
+  color: var(--primary);
+}
+
+
+.matchBarTrack {
+  height: 6px;
+
+  border-radius: 999px;
+
+  background: var(--track-bg);
+
+  overflow: hidden;
+
+  margin-top: -0.5rem;
+}
+
+
+.matchBarFill {
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+
+.reasonList {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.4rem;
+}
+
+
+.reasonList li {
+  font-size: 0.82rem;
+
+  color: var(--text-dark);
+
+  line-height: 1.4;
+}
+
+
+.harvestDivider {
+  height: 1px;
+
+  background: var(--border);
+}
+
+
+.miniChipsRow {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.4rem;
+}
+
+
+.miniChip {
+  padding: 0.32rem 0.65rem;
+
+  border-radius: 999px;
+
+  background: var(--chip-bg);
+
+  font-size: 0.72rem;
+
+  color: var(--text-dark);
+}
+
+
+.harvestTip {
+  margin: 0;
+
+  font-size: 0.8rem;
+
+  font-style: italic;
+
+  color: var(--text-muted);
+
+  line-height: 1.5;
+}
+
+
+.harvestDisclaimer {
+  margin: 1.1rem 0 0;
+
+  font-size: 0.76rem;
+
+  color: var(--text-muted);
+
+  line-height: 1.55;
 }
 
 
@@ -625,6 +1232,10 @@
   .forecastStrip,
   .skeletonStrip {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .harvestGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
 }
@@ -655,8 +1266,20 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .resultCard {
+  .soilCard {
     padding: 1.5rem;
+  }
+
+  .soilGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .harvestGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .soilActions {
+    flex-wrap: wrap;
   }
 
 }

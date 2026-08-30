@@ -1,0 +1,39 @@
+{
+  "model_type": "random_forest",
+  "features": [
+    "N",
+    "P",
+    "K",
+    "temperature",
+    "humidity",
+    "ph",
+    "rainfall"
+  ],
+  "classes": [
+    "apple",
+    "banana",
+    "blackgram",
+    "chickpea",
+    "coffee",
+    "jute",
+    "kidneybeans",
+    "lentil",
+    "maize",
+    "mango",
+    "millet",
+    "mungbean",
+    "muskmelon",
+    "mustard",
+    "orange",
+    "papaya",
+    "pigeonpeas",
+    "pomegranate",
+    "potato",
+    "rice",
+    "watermelon",
+    "wheat"
+  ],
+  "held_out_test_accuracy": 0.9932,
+  "cross_val_mean_accuracy": 0.9886,
+  "trained_on_rows": 2200
+}
