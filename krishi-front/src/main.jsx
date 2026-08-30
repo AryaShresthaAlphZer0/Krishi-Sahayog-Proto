@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { CartProvider } from "./context/CartContext";
+import CartDrawer from "./components/CartDrawer";
 import "./index.css";
 
 ReactDOM.createRoot(
@@ -12,7 +14,10 @@ ReactDOM.createRoot(
   <React.StrictMode>
     <ThemeProvider>
       <ToastProvider>
-        <App />
+        <CartProvider>
+          <App />
+          <CartDrawer />
+        </CartProvider>
       </ToastProvider>
     </ThemeProvider>
   </React.StrictMode>

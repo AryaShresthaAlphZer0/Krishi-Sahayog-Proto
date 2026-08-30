@@ -47,6 +47,23 @@
   --disabled-bg: #b9c9b8;
 
   /* ===============================
+     GLASSMORPHISM (marketplace)
+  =============================== */
+
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: rgba(31, 72, 45, 0.18);
+  --glass-blur: 18px;
+
+  /* Backdrop gradient behind the glass panels */
+  --glass-backdrop:
+    radial-gradient(circle at 15% 20%, rgba(102, 187, 106, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(214, 140, 69, 0.3), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(46, 125, 50, 0.28), transparent 50%),
+    linear-gradient(160deg, #eaf3ea 0%, #f7f2e7 100%);
+
+  /* ===============================
      LAYOUT
   =============================== */
 
@@ -80,6 +97,17 @@
   --track-bg: #26302a;
 
   --disabled-bg: #3a4a3f;
+
+  --glass-bg: rgba(28, 36, 30, 0.55);
+  --glass-bg-strong: rgba(28, 36, 30, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
+
+  --glass-backdrop:
+    radial-gradient(circle at 15% 20%, rgba(102, 187, 106, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(214, 140, 69, 0.16), transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(46, 125, 50, 0.16), transparent 50%),
+    linear-gradient(160deg, #0e140f 0%, #141c15 100%);
 }
 
 

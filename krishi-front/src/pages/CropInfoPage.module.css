@@ -20,7 +20,7 @@
       rgba(102, 187, 106, 0.12),
       transparent 32%
     ),
-    var(--background);
+    var(--background) url("../assets/others/info.png") center center / cover no-repeat;
 
   padding: 4rem 6vw;
 

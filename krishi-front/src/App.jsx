@@ -12,6 +12,7 @@ import DashboardPage from "./pages/DashboardPage";
 import CropInfoPage from "./pages/CropInfoPage";
 import CropRecommendationPage from "./pages/CropRecommendationPage";
 import SettingsPage from "./pages/SettingsPage";
+import MarketplacePage from "./pages/MarketplacePage";
 
 import Navbar from "./components/Navbar";
 
@@ -80,6 +81,11 @@ function AppContent() {
         <Route
           path="/settings"
           element={<SettingsPage />}
+        />
+
+        <Route
+          path="/marketplace"
+          element={<MarketplacePage />}
         />
 
       </Routes>
