@@ -6,6 +6,7 @@ import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { CartProvider } from "./context/CartContext";
 import CartDrawer from "./components/CartDrawer";
+import { Mascot } from "./components/Mascot";
 import "./index.css";
 
 ReactDOM.createRoot(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(
         <CartProvider>
           <App />
           <CartDrawer />
+          <Mascot />
         </CartProvider>
       </ToastProvider>
     </ThemeProvider>

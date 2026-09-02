@@ -1,0 +1,595 @@
+/* =========================================================
+   FLOATING MASCOT
+========================================================= */
+
+.mascotWrap {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  z-index: 4000;
+
+  will-change: transform;
+}
+
+
+.mascotBtn {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  border: none;
+  background: none;
+
+  padding: 0;
+
+  touch-action: none;
+  user-select: none;
+
+  cursor: grab;
+}
+
+
+.dragging {
+  cursor: grabbing;
+}
+
+
+.mascotInner {
+  display: block;
+}
+
+
+.bob {
+  animation: mascotBob 3.2s ease-in-out infinite;
+}
+
+
+.cheerHop {
+  animation: cheerHop 0.7s ease-in-out infinite;
+}
+
+
+.scaleUp {
+  transform: scale(1.1);
+}
+
+
+@keyframes mascotBob {
+
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+
+}
+
+
+@keyframes cheerHop {
+
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  30% {
+    transform: translateY(-18px) rotate(-8deg);
+  }
+
+  60% {
+    transform: translateY(-6px) rotate(8deg);
+  }
+
+}
+
+
+/* =========================================================
+   SPEECH BUBBLE
+========================================================= */
+
+.speechBubble {
+  position: absolute;
+
+  top: -36px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  white-space: nowrap;
+
+  padding: 0.4rem 0.8rem;
+
+  border-radius: 999px;
+
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text-dark);
+
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+
+  animation: bubbleIn 0.25s ease-out both;
+}
+
+
+@keyframes bubbleIn {
+
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+}
+
+
+.cheerPop {
+  position: absolute;
+
+  font-size: 1.1rem;
+
+  animation: cheerPop 1.2s ease-out infinite;
+}
+
+
+.cheerPopLeft {
+  top: -16px;
+  left: 8px;
+}
+
+
+.cheerPopRight {
+  top: -24px;
+  right: 8px;
+
+  animation-delay: 200ms;
+}
+
+
+@keyframes cheerPop {
+
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.6);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.2);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.9);
+  }
+
+}
+
+
+/* =========================================================
+   BATTLE OVERLAY (virus + beam)
+========================================================= */
+
+.battleLayer {
+  position: fixed;
+  inset: 0;
+
+  z-index: 3900;
+
+  pointer-events: none;
+}
+
+
+.beamSvg {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+.beam {
+  animation: beamFlicker 0.12s linear infinite;
+}
+
+
+@keyframes beamFlicker {
+
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+
+}
+
+
+.virusWrap {
+  position: absolute;
+
+  animation: virusJitter 0.6s ease-in-out infinite;
+}
+
+
+@keyframes virusJitter {
+
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(-5px, 4px) scale(1.05);
+  }
+
+  50% {
+    transform: translate(4px, -5px) scale(0.96);
+  }
+
+  75% {
+    transform: translate(5px, 4px) scale(1.03);
+  }
+
+}
+
+
+/* =========================================================
+   CHAT PANEL
+========================================================= */
+
+.chatPanel {
+  position: fixed;
+
+  bottom: 128px;
+  right: 24px;
+
+  z-index: 4000;
+
+  display: flex;
+
+  flex-direction: column;
+
+  width: min(352px, calc(100vw - 48px));
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+
+  animation: bubbleIn 0.25s ease-out both;
+}
+
+
+.chatHeader {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  padding: 0.9rem 1rem;
+
+  background: var(--primary);
+}
+
+
+.chatHeaderIcon {
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  padding: 0.2rem;
+
+  display: flex;
+}
+
+
+.chatHeaderText {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+.chatName {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  line-height: 1.1;
+
+  color: var(--white);
+}
+
+
+.chatTagline {
+  margin: 0.2rem 0 0;
+
+  font-size: 0.74rem;
+
+  color: rgba(255, 255, 255, 0.85);
+}
+
+
+.chatCloseBtn {
+  border: none;
+
+  background: transparent;
+
+  border-radius: 50%;
+
+  padding: 0.35rem;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease;
+}
+
+
+.chatCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+/* =========================================================
+   CHAT BODY
+========================================================= */
+
+.chatBody {
+  max-height: 320px;
+  min-height: 160px;
+
+  overflow-y: auto;
+
+  padding: 1rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.7rem;
+}
+
+
+.introBlock {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.75rem;
+}
+
+
+.introText {
+  margin: 0;
+
+  font-size: 0.85rem;
+
+  line-height: 1.55;
+
+  color: var(--text-muted);
+}
+
+
+.suggestionRow {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.4rem;
+}
+
+
+.suggestionChip {
+  border-radius: 999px;
+
+  border: 1px solid var(--border);
+
+  background: var(--chip-bg);
+
+  color: var(--text-dark);
+
+  padding: 0.35rem 0.7rem;
+
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease;
+}
+
+
+.suggestionChip:hover {
+  background: var(--chip-bg-hover);
+}
+
+
+.userRow {
+  display: flex;
+
+  justify-content: flex-end;
+}
+
+
+.userBubble {
+  max-width: 85%;
+
+  margin: 0;
+
+  border-radius: 16px 16px 4px 16px;
+
+  background: var(--primary);
+
+  color: var(--white);
+
+  padding: 0.5rem 0.8rem;
+
+  font-size: 0.85rem;
+
+  line-height: 1.4;
+}
+
+
+.botText {
+  max-width: 92%;
+
+  margin: 0;
+
+  white-space: pre-wrap;
+
+  font-size: 0.85rem;
+
+  line-height: 1.5;
+
+  color: var(--text-dark);
+}
+
+
+.thinkingText {
+  margin: 0;
+
+  font-size: 0.82rem;
+
+  color: var(--text-muted);
+
+  animation: thinkingPulse 1.3s ease-in-out infinite;
+}
+
+
+@keyframes thinkingPulse {
+
+  0%, 100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+}
+
+
+/* =========================================================
+   CHAT FORM
+========================================================= */
+
+.chatForm {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  border-top: 1px solid var(--border);
+
+  background: var(--chip-bg);
+
+  padding: 0.75rem;
+}
+
+
+.chatInput {
+  flex: 1;
+
+  min-width: 0;
+
+  border-radius: 999px;
+
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text-dark);
+
+  padding: 0.5rem 1rem;
+
+  font-size: 0.85rem;
+  font-family: inherit;
+
+  outline: none;
+}
+
+
+.chatInput:focus {
+  border-color: var(--primary-light);
+}
+
+
+.sendBtn {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: var(--primary);
+
+  color: var(--white);
+
+  font-size: 0.9rem;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: background-color 0.15s ease;
+}
+
+
+.sendBtn:hover:not(:disabled) {
+  background: var(--primary-light);
+}
+
+
+.sendBtn:disabled {
+  background: var(--disabled-bg);
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .chatPanel {
+    right: 12px;
+    bottom: 112px;
+  }
+
+}

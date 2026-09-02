@@ -1,0 +1,10 @@
+.spin {
+  animation: virusSpin 6s linear infinite;
+}
+
+
+@keyframes virusSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

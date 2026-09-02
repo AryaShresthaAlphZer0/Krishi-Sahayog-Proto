@@ -1,0 +1,22 @@
+.face {
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.15));
+}
+
+
+.blink {
+  animation: mascotBlink 4.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+
+@keyframes mascotBlink {
+
+  0%, 92%, 100% {
+    transform: scaleY(1);
+  }
+
+  96% {
+    transform: scaleY(0.1);
+  }
+
+}

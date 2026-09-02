@@ -132,7 +132,7 @@ class CropRecommendation(db.Model):
 class CropLocation(db.Model):
     __tablename__ = "crop_locations"
 
-    # One saved location per user
+    
     user_id = db.Column(
         db.Integer,
         db.ForeignKey("users.id", ondelete="CASCADE"),
