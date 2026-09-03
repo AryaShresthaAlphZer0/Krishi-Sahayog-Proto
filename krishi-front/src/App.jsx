@@ -13,6 +13,7 @@ import CropInfoPage from "./pages/CropInfoPage";
 import CropRecommendationPage from "./pages/CropRecommendationPage";
 import SettingsPage from "./pages/SettingsPage";
 import MarketplacePage from "./pages/MarketplacePage";
+import DiseaseDetectionPage from "./pages/DiseaseDetectionPage";
 
 import Navbar from "./components/Navbar";
 
@@ -86,6 +87,10 @@ function AppContent() {
         <Route
           path="/marketplace"
           element={<MarketplacePage />}
+        />
+        <Route
+          path="/disease-detection"
+          element={<DiseaseDetectionPage />}
         />
 
       </Routes>

@@ -1,0 +1,131 @@
+.field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.3rem;
+}
+
+
+.labelRow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+}
+
+
+.labelIcon {
+  color: var(--primary);
+
+  font-size: 0.9rem;
+}
+
+
+.label {
+  font-size: 0.95rem;
+
+  font-weight: 700;
+
+  color: var(--text-dark);
+}
+
+
+.hint {
+  margin: 0 0 0.8rem;
+
+  font-size: 0.76rem;
+
+  color: var(--text-muted);
+}
+
+
+.dropzone {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 11;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 2px dashed var(--border);
+
+  border-radius: 16px;
+
+  background: var(--chip-bg);
+
+  padding: 0;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+
+.dropzone:hover {
+  border-color: var(--primary-light);
+}
+
+
+.dropzoneActive {
+  border-color: var(--primary);
+
+  background: var(--chip-bg-hover);
+}
+
+
+.dropzoneFilled {
+  border-style: solid;
+
+  border-color: var(--border);
+}
+
+
+.dropzonePlaceholder {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.6rem;
+
+  padding: 1.5rem;
+
+  text-align: center;
+}
+
+
+.dropzoneIcon {
+  font-size: 2.2rem;
+}
+
+
+.dropzoneText {
+  font-size: 0.85rem;
+
+  color: var(--text-muted);
+
+  max-width: 220px;
+}
+
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+.hiddenInput {
+  display: none;
+}
