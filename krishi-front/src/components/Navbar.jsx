@@ -4,6 +4,17 @@ import styles from "./Navbar.module.css";
 import Profile from "./Profile";
 import { useCart } from "../context/useCart";
 
+import homeIcon from "../assets/icons/home.png";
+import pipIcon from "../assets/others/pip.png";
+import bazaarIcon from "../assets/icons/bazaar.png";
+import cartIcon from "../assets/icons/cart.png";
+import featuresIcon from "../assets/icons/features.png";
+import cropIcon from "../assets/icons/croprecommendation.png";
+import diseaseIcon from "../assets/icons/disease.png";
+import dashboardIcon from "../assets/icons/dashboard.png";
+
+import settingsIcon from "../assets/icons/settings.png";
+
 export default function Navbar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -106,7 +117,7 @@ export default function Navbar() {
             className={styles.brand}
           >
             <span className={styles.leafMark}>
-              🌱
+              <img src={pipIcon} alt="Home" className={styles.iconImg} />
             </span>
 
             <span className={styles.brandText}>
@@ -159,7 +170,7 @@ export default function Navbar() {
               }
             >
               <span className={styles.linkIcon}>
-                🏠
+                <img src={homeIcon} alt="Home" className={styles.iconImg} />
               </span>
 
               <span className={styles.linkLabel}>
@@ -190,7 +201,7 @@ export default function Navbar() {
               }
             >
               <span className={styles.linkIcon}>
-                🛍️
+                <img src={bazaarIcon} alt="Bazaar" className={styles.iconImg} />
               </span>
 
               <span className={styles.linkLabel}>
@@ -212,7 +223,7 @@ export default function Navbar() {
               onClick={openCart}
             >
               <span className={styles.linkIcon}>
-                🛒
+                <img src={cartIcon} alt="Cart" className={styles.iconImg} />
                 {totalItems > 0 && (
                   <span className={styles.cartCount}>
                     {totalItems}
@@ -265,7 +276,7 @@ export default function Navbar() {
             >
 
               <span className={styles.linkIcon}>
-                ✨
+                <img src={featuresIcon} alt="Features" className={styles.iconImg} />
               </span>
 
               <span className={styles.linkLabel}>
@@ -303,7 +314,9 @@ export default function Navbar() {
                     setMobileOpen(false)
                   }
                 >
-                  <span>🌾</span>
+                  <span>
+                    <img src={cropIcon} alt="Crop Recommendation" className={styles.iconImg} />
+                  </span>
 
                   <span>
                     Crop Recommendation
@@ -318,7 +331,9 @@ export default function Navbar() {
                     setMobileOpen(false)
                   }
                 >
-                  <span>🍃</span>
+                  <span>
+                    <img src={diseaseIcon} alt="Disease Detection" className={styles.iconImg} />
+                  </span>
 
                   <span>
                     Disease Detection
@@ -333,7 +348,9 @@ export default function Navbar() {
                     setMobileOpen(false)
                   }
                 >
-                  <span>📊</span>
+                  <span>
+                    <img src={dashboardIcon} alt="Farm Dashboard" className={styles.iconImg} />
+                  </span>
 
                   <span>
                     Farm Dashboard
@@ -344,38 +361,6 @@ export default function Navbar() {
 
             )}
 
-          </li>
-
-
-          {/* =========================================
-              ABOUT
-          ========================================= */}
-
-          <li>
-            <Link
-              to="/#about"
-              className={[
-                styles.link,
-                location.pathname === "/" &&
-                location.hash === "#about"
-                  ? styles.active
-                  : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              title="About"
-              onClick={() =>
-                setMobileOpen(false)
-              }
-            >
-              <span className={styles.linkIcon}>
-                🌿
-              </span>
-
-              <span className={styles.linkLabel}>
-                About
-              </span>
-            </Link>
           </li>
 
 
@@ -400,7 +385,7 @@ export default function Navbar() {
               }
             >
               <span className={styles.linkIcon}>
-                ⚙️
+                <img src={settingsIcon} alt="Settings" className={styles.iconImg} />
               </span>
 
               <span className={styles.linkLabel}>

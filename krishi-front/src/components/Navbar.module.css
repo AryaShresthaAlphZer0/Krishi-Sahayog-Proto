@@ -739,3 +739,8 @@
     z-index: 35;
   }
 }
+.iconImg {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
