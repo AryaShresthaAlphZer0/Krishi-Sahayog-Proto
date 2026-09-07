@@ -16,6 +16,7 @@ from routes.auth import auth_bp
 from routes.crop_location import crop_location_bp
 from routes.crop_recommend import crop_recommend_bp
 from routes.weather import weather_bp
+from routes.disease_detect import disease_detect_bp
 
 
 app = Flask(__name__)
@@ -170,6 +171,7 @@ app.register_blueprint(auth_bp, url_prefix="/api/auth")
 app.register_blueprint(crop_location_bp, url_prefix="/api/crop-location")
 app.register_blueprint(crop_recommend_bp, url_prefix="/api/crop-recommend")
 app.register_blueprint(weather_bp, url_prefix="/api/weather")
+app.register_blueprint(disease_detect_bp, url_prefix="/api/disease-detect")
 
 
 @app.route("/")

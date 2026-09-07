@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import LeafImageUpload from "../components/LeafImageUpload";
-import { simulateDiagnosis } from "../utils/diseaseSimulator";
+import { detectDisease } from "../api/diseaseDetect";
 import { useToast } from "../context/useToast";
 
 import styles from "./DiseaseDetectionPage.module.css";
@@ -63,10 +63,28 @@ export default function DiseaseDetectionPage() {
     setAnalyzing(true);
     setResult(null);
 
-    const diagnosis = await simulateDiagnosis();
+    try {
 
-    setResult(diagnosis);
-    setAnalyzing(false);
+      const data = await detectDisease(file);
+
+      if (data.success) {
+        setResult(data.result);
+      } else {
+        showToast(data.message || "Couldn't analyze the image.", "error");
+      }
+
+    } catch (error) {
+
+      showToast(
+        error?.response?.data?.message ||
+        "Couldn't reach the disease detection service. Please try again.",
+        "error"
+      );
+
+    } finally {
+
+      setAnalyzing(false);
+    }
   }
 
 
@@ -193,25 +211,25 @@ export default function DiseaseDetectionPage() {
                   <div
                     className={[
                       styles.diseaseIconWrap,
-                      result.id === "healthy" ? styles.healthyIconWrap : "",
+                      result.is_healthy ? styles.healthyIconWrap : "",
                     ].join(" ")}
                   >
                     <span className={styles.diseaseIcon}>
-                      {result.icon}
+                      {result.is_healthy ? "✅" : "🦠"}
                     </span>
                   </div>
 
                   <div>
 
                     <span className={styles.detectedLabel}>
-                      {result.id === "healthy" ? "Result" : "Detected disease"}
+                      {result.is_healthy ? "Result" : "Detected disease"}
                     </span>
 
                     <span className={styles.diseaseName}>
-                      {result.name}
-                      {result.scientificName && (
+                      {result.disease}
+                      {result.crop && (
                         <span className={styles.scientificName}>
-                          {" "}({result.scientificName})
+                          {" "}on {result.crop}
                         </span>
                       )}
                     </span>
