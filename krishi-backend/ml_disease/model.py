@@ -29,25 +29,27 @@ IMG_SIZE = 224          # MobileNetV2 standard input size
 HIDDEN_UNITS = 128      # Most common choice in this tutorial pattern — adjust if load fails
 
 WEIGHTS_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), "model_weights.h5"
+    os.path.dirname(os.path.abspath(__file__)), "model_weights.weights.h5"
 )
 
 
 def _build_model():
-
     base = MobileNetV2(
         input_shape=(IMG_SIZE, IMG_SIZE, 3),
         include_top=False,
-        weights=None,  # weights come from the uploaded file, not ImageNet
+        weights=None,
     )
 
-    x = layers.GlobalAveragePooling2D()(base.output)
-    x = layers.Dropout(0.2)(x)
-    x = layers.Dense(HIDDEN_UNITS, activation="relu")(x)
-    x = layers.Dropout(0.2)(x)
-    outputs = layers.Dense(NUM_CLASSES, activation="softmax")(x)
+    model = models.Sequential([
+        base,
+        layers.GlobalAveragePooling2D(),
+        layers.Dropout(0.2),
+        layers.Dense(HIDDEN_UNITS, activation="relu"),
+        layers.Dropout(0.2),
+        layers.Dense(NUM_CLASSES, activation="softmax"),
+    ])
 
-    return models.Model(inputs=base.input, outputs=outputs)
+    return model
 
 
 _model = _build_model()
